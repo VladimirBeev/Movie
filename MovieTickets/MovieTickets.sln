@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieTickets.Data.EntityMod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieTickets.Common", "..\MovieTickets.Common\MovieTickets.Common.csproj", "{F5356678-139A-4564-8562-899CC9A7F1B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieTickets.Web.ViewModels", "..\MovieTickets.Web.ViewModels\MovieTickets.Web.ViewModels.csproj", "{79DF5713-B64B-4EBC-BCEB-73BF59C7F08D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{F5356678-139A-4564-8562-899CC9A7F1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5356678-139A-4564-8562-899CC9A7F1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5356678-139A-4564-8562-899CC9A7F1B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79DF5713-B64B-4EBC-BCEB-73BF59C7F08D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79DF5713-B64B-4EBC-BCEB-73BF59C7F08D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79DF5713-B64B-4EBC-BCEB-73BF59C7F08D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79DF5713-B64B-4EBC-BCEB-73BF59C7F08D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +51,7 @@ Global
 		{5B188B46-3203-4679-B4A6-610B7961DCF7} = {7ADF94F5-8950-40BB-9F91-8BBD18627B5B}
 		{DFBE0CB3-5419-410C-AA31-DB4FBF6FD668} = {53BE7D05-C2FA-49E3-AADB-CE8E078370A0}
 		{3C9FB98E-23B1-4A1C-A549-80B0FDBB0E8D} = {53BE7D05-C2FA-49E3-AADB-CE8E078370A0}
+		{79DF5713-B64B-4EBC-BCEB-73BF59C7F08D} = {7ADF94F5-8950-40BB-9F91-8BBD18627B5B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C701D6BB-0DEC-42C3-BB87-385CC473C42C}

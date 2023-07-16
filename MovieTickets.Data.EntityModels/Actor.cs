@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MovieTickets.Common.EntityValidationConstant.ActorConstants;
+
 namespace MovieTickets.Data.EntityModels
 {
     public class Actor
@@ -8,8 +10,10 @@ namespace MovieTickets.Data.EntityModels
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(ActorNameMaxLength)]
         public string Name { get; set; } = null!;
 
+        [MaxLength(ActorDescriptionMaxLength)]
         public string? Description { get; set; }
 
         public string? ImageUrl { get; set; }

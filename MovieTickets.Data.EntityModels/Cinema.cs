@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MovieTickets.Common.EntityValidationConstant.CinemaConstants;
+
 namespace MovieTickets.Data.EntityModels
 {
     public class Cinema
@@ -8,16 +10,21 @@ namespace MovieTickets.Data.EntityModels
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(CinemaNameMaxLength)]
         public string Name { get; set; } = null!;
 
+        [MaxLength(CinemaDescriptionMaxLength)]
         public string? Description { get; set; }
 
         public string? LogoUrl { get; set; }
 
+        [MaxLength(CinemaCountryMaxLength)]
         public string? Country { get; set; }
 
+        [MaxLength(CinemaCityMaxLength)]
         public string? City { get; set; }
 
+        [MaxLength(CinemaStreetMaxLength)]
         public string? Street { get; set; }
 
 

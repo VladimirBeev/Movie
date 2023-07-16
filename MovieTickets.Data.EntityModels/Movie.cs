@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using static MovieTickets.Common.EntityValidationConstant.MovieConstants;
+
 namespace MovieTickets.Data.EntityModels
 {
     public class Movie
@@ -9,8 +11,10 @@ namespace MovieTickets.Data.EntityModels
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(MovieNameMaxLength)]
         public string Name { get; set; } = null!;
 
+        [MaxLength(MovieDescriptionMaxLength)]
         public string? Description { get; set; }
         public decimal Price { get; set; }
 
