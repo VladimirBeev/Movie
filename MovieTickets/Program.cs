@@ -5,13 +5,15 @@ using MovieTickets.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<MovieDbContext>(options =>
+var connectionString = 
+    builder.Configuration.GetConnectionString("DefaultConnection");
+    builder.Services.AddDbContext<MovieDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+    })
     .AddEntityFrameworkStores<MovieDbContext>();
 
 builder.Services.AddControllersWithViews();
