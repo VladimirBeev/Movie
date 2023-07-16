@@ -13,5 +13,8 @@ namespace MovieTickets.Data.EntityModels
         public string? Description { get; set; }
 
         public string? ImageUrl { get; set; }
+
+
+        public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
     }
 }
