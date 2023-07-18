@@ -5,19 +5,21 @@ using static MovieTickets.Common.EntityValidationConstant.MovieConstants;
 
 namespace MovieTickets.Data.EntityModels
 {
-    public class Movie
+	public class Movie
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(MovieNameMaxLength)]
-        public string Name { get; set; } = null!;
+        [MaxLength(MovieTitleMaxLength)]
+        public string Title { get; set; } = null!;
 
+        [Required]
         [MaxLength(MovieDescriptionMaxLength)]
-        public string? Description { get; set; }
+        public string Description { get; set; } = null!;
         public decimal Price { get; set; }
 
+        [MaxLength(MovieImageUrlMaxLength)]
         public string? ImageUrl { get; set; }
 
         public DateTime? StartDate { get; set; }

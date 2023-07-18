@@ -16,6 +16,7 @@ namespace MovieTickets.Data.EntityModels
         [MaxLength(ActorDescriptionMaxLength)]
         public string? Description { get; set; }
 
+        [MaxLength(ActorImageUrlMaxLength)]
         public string? ImageUrl { get; set; }
 
 

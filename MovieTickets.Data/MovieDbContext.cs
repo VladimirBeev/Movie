@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 using MovieTickets.Data.EntityModels;
 
+using System.Reflection;
+
 namespace MovieTickets.Data;
 
 public class MovieDbContext : IdentityDbContext
@@ -14,22 +16,9 @@ public class MovieDbContext : IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ActorMovie>()
-            .HasKey(k => new { k.MovieId, k.ActorId });
-
-        modelBuilder.Entity<ActorMovie>()
-            .HasOne(x => x.Movie)
-            .WithMany(a => a.ActorMovies)
-            .HasForeignKey(x => x.MovieId);
-
-        modelBuilder.Entity<ActorMovie>()
-            .HasOne(x => x.Actor)
-            .WithMany(a => a.ActorMovies)
-            .HasForeignKey(a => a.ActorId);
-
-        modelBuilder.Entity<Movie>()
-            .Property(m => m.Price)
-            .HasPrecision(6, 2);
+        Assembly configAssembly =  Assembly.GetAssembly(typeof(MovieDbContext)) ??
+            Assembly.GetExecutingAssembly();
+        modelBuilder.ApplyConfigurationsFromAssembly(configAssembly);
 
         base.OnModelCreating(modelBuilder);
     }
