@@ -19,7 +19,6 @@ namespace MovieTickets.Data.EntityModels
         [MaxLength(ActorImageUrlMaxLength)]
         public string? ImageUrl { get; set; }
 
-
         public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
     }
 }

@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using MovieTickets.Data;
+using MovieTickets.Services.Data;
+using MovieTickets.Services.Data.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
             .GetValue<bool>("Identity:SignIn:RequireUppercase");
     })
     .AddEntityFrameworkStores<MovieDbContext>();
+
+builder.Services.AddScoped<IActorService, ActorService>();
 
 builder.Services.AddControllersWithViews();
 

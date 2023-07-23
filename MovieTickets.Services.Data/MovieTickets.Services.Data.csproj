@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MovieTickets.Common\MovieTickets.Common.csproj" />
+    <ProjectReference Include="..\MovieTickets.Data.EntityModels\MovieTickets.Data.EntityModels.csproj" />
+    <ProjectReference Include="..\MovieTickets.Data\MovieTickets.Data.csproj" />
+    <ProjectReference Include="..\MovieTickets.Web.ViewModels\MovieTickets.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>
