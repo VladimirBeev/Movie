@@ -13,7 +13,7 @@ namespace MovieTickets.Web.ViewModels.Producer
 		[Display(Name = "Biography")]
 		public string? Description { get; set; } = null!;
 
-		[Display(Name = "Profile Picture URL")]
+		[Display(Name = "Profile Picture")]
 		public string? ImageUrl { get; set; } = null!;
     }
 }
