@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using MovieTickets.Web.ViewModel.Home;
+using MovieTickets.Web.ViewModels.Home;
 
 using System.Diagnostics;
 

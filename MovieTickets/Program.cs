@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using MovieTickets.Data;
-using MovieTickets.Services.Data;
 using MovieTickets.Services.Data.Interfaces;
+using MovieTickets.Web.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +34,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     })
     .AddEntityFrameworkStores<MovieDbContext>();
 
-builder.Services.AddScoped<IActorService, ActorService>();
+
+builder.Services.AddApplicationServices(typeof(IActorService));
+
+//builder.Services.AddScoped<IActorService, ActorService>();
 
 builder.Services.AddControllersWithViews();
 

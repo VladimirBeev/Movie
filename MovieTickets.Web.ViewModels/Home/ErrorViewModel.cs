@@ -1,4 +1,4 @@
-namespace MovieTickets.Web.ViewModel.Home;
+namespace MovieTickets.Web.ViewModels.Home;
 
 public class ErrorViewModel
 {
