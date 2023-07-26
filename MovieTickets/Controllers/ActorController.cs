@@ -39,5 +39,18 @@ namespace MovieTickets.Web.Controllers
 
             return RedirectToAction("AllActors");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var actorDetails = await actorService.GetActorByIdAsync(id);
+
+            if (actorDetails == null)
+            {
+                return RedirectToAction("AllActors");
+            }
+
+            return View(actorDetails);
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace MovieTickets.Services.Data.Interfaces
     {
         Task<IEnumerable<AllActorsViewModel>> GetAllActorsAsync();
 
-        Task<Actor> GetActorByIdAsync(int id);
+        Task<AllActorsViewModel> GetActorByIdAsync(int id);
 
         Task AddActorAsync(AllActorsViewModel actor);
 

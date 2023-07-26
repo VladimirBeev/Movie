@@ -32,15 +32,21 @@ namespace MovieTickets.Services.Data
 
         public async Task DeleteActorAsync(int id)
         {
-            var actor = await dbContext.Actors.FindAsync(id);
+            var actor = await dbContext.Actors.FirstOrDefaultAsync(a => a.Id == id);
             dbContext.Actors.Remove(actor);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<Actor> GetActorByIdAsync(int id)
+        public async Task<AllActorsViewModel> GetActorByIdAsync(int id)
         {
             var actor = await dbContext.Actors.FirstOrDefaultAsync(a => a.Id == id);
-            return actor;
+            AllActorsViewModel viewModel = new AllActorsViewModel();
+            viewModel.Id = actor.Id;
+            viewModel.Name = actor.Name;
+            viewModel.Description = actor.Description;
+            viewModel.ImageUrl = actor.ImageUrl;
+
+            return viewModel;
         }
 
         public async Task<IEnumerable<AllActorsViewModel>> GetAllActorsAsync()
