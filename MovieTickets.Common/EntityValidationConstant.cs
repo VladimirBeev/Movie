@@ -4,7 +4,7 @@
 	{
 		public static class ActorConstants
 		{
-			public const int ActorNameMinLength = 0;
+			public const int ActorNameMinLength = 3;
 			public const int ActorNameMaxLength = 200;
 
 			public const int ActorDescriptionMinLength = 20;

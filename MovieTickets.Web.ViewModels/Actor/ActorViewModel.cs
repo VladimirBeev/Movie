@@ -4,13 +4,13 @@ using static MovieTickets.Common.EntityValidationConstant.ActorConstants;
 
 namespace MovieTickets.Web.ViewModels.Actor
 {
-	public class AllActorsViewModel
+	public class ActorViewModel
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(ActorNameMaxLength)]
+        [StringLength(ActorNameMaxLength, MinimumLength = ActorNameMinLength)]
         [Display(Name = "Full Name")]
         public string Name { get; set; } = null!;
 

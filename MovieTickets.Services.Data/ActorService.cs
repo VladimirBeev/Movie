@@ -16,7 +16,7 @@ namespace MovieTickets.Services.Data
             this.dbContext = dbContext;
         }
 
-        public async Task AddActorAsync(AllActorsViewModel actor)
+        public async Task AddActorAsync(ActorViewModel actor)
         {
             Actor newActor = new Actor();
 
@@ -37,21 +37,26 @@ namespace MovieTickets.Services.Data
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<AllActorsViewModel> GetActorByIdAsync(int id)
+        public async Task<ActorViewModel> GetActorByIdAsync(int id)
         {
-            var actor = await dbContext.Actors.FirstOrDefaultAsync(a => a.Id == id);
-            AllActorsViewModel viewModel = new AllActorsViewModel();
-            viewModel.Id = actor.Id;
-            viewModel.Name = actor.Name;
-            viewModel.Description = actor.Description;
-            viewModel.ImageUrl = actor.ImageUrl;
-
-            return viewModel;
+            Actor? actor = await dbContext.Actors.FirstOrDefaultAsync(a => a.Id == id);
+            if (actor != null)
+            {
+                var actorModel = new ActorViewModel()
+                {
+                    Id = actor.Id,
+                    Name = actor.Name,
+                    Description = actor.Description,
+                    ImageUrl = actor.ImageUrl,
+                };
+                return actorModel;
+            }
+            return null!;
         }
 
-        public async Task<IEnumerable<AllActorsViewModel>> GetAllActorsAsync()
+        public async Task<IEnumerable<ActorViewModel>> GetAllActorsAsync()
         {
-            return await dbContext.Actors.Select(a => new AllActorsViewModel()
+            return await dbContext.Actors.Select(a => new ActorViewModel()
             {
                 Id = a.Id,
                 Name = a.Name,
@@ -61,9 +66,22 @@ namespace MovieTickets.Services.Data
             }).ToListAsync();
         }
 
-        public async Task<AllActorsViewModel> UpdatActorAsync(int id, AllActorsViewModel updateActor)
+        public async Task<ActorViewModel> UpdateActorAsync(ActorViewModel model)
         {
-            return updateActor;
+            var actorToEdit = await dbContext.Actors.FirstOrDefaultAsync(a => a.Id == model.Id);
+
+            if (actorToEdit == null)
+            {
+                return null!;
+            }
+            actorToEdit.Id = model.Id;
+            actorToEdit.Name = model.Name;
+            actorToEdit.Description = model.Description;
+            actorToEdit.ImageUrl = model.ImageUrl;
+
+            await dbContext.SaveChangesAsync();
+
+            return (model);
         }
     }
 }
