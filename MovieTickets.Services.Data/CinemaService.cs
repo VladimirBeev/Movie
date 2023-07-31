@@ -7,7 +7,7 @@ using MovieTickets.Web.ViewModels.Cinema;
 
 namespace MovieTickets.Services.Data
 {
-	public class CinemaService : ICinemaService
+    public class CinemaService : ICinemaService
 	{
 		private readonly MovieDbContext dbContext;
 

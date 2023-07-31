@@ -15,28 +15,30 @@
 
 		public static class ProducerConstants
 		{
-			public const int ProducerNameMinLength = 0;
+			public const int ProducerNameMinLength = 3;
 			public const int ProducerNameMaxLength = 200;
 
 			public const int ProducerDescriptionMinLength = 20;
 			public const int ProducerDescriptionMaxLength = 2000;
+
+			public const int ProducerImageUrlMaxLength = 2048;
 		}
 
 		public static class CinemaConstants
 		{
-			public const int CinemaNameMinLength = 0;
+			public const int CinemaNameMinLength = 3;
 			public const int CinemaNameMaxLength = 200;
 
 			public const int CinemaDescriptionMinLength = 20;
 			public const int CinemaDescriptionMaxLength = 2000;
 
-			public const int CinemaCountryMinLength = 0;
+			public const int CinemaCountryMinLength = 3;
 			public const int CinemaCountryMaxLength = 100;
 
-			public const int CinemaCityMinLength = 0;
+			public const int CinemaCityMinLength = 3;
 			public const int CinemaCityMaxLength = 100;
 
-			public const int CinemaStreetMinLength = 0;
+			public const int CinemaStreetMinLength = 3;
 			public const int CinemaStreetMaxLength = 100;
 
 			public const int CinemaLogoUrlMaxLength = 2048;
@@ -44,10 +46,10 @@
 
 		public static class MovieConstants
 		{
-			public const int MovieTitleMinLength = 0;
+			public const int MovieTitleMinLength = 3;
 			public const int MovieTitleMaxLength = 200;
 
-			public const int MovieDescriptionMinLength = 0;
+			public const int MovieDescriptionMinLength = 3;
 			public const int MovieDescriptionMaxLength = 2000;
 
 			public const int MovieCategoryMinLength = 1;

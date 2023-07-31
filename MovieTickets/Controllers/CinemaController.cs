@@ -5,72 +5,73 @@ using MovieTickets.Web.ViewModels.Cinema;
 
 namespace MovieTickets.Web.Controllers
 {
-	public class CinemaController : Controller
-	{
-		private readonly ICinemaService cinemaService;
+    public class CinemaController : Controller
+    {
+        private readonly ICinemaService cinemaService;
 
-		public CinemaController(ICinemaService cinemaService)
-		{
-			this.cinemaService = cinemaService;
-		}
+        public CinemaController(ICinemaService cinemaService)
+        {
+            this.cinemaService = cinemaService;
+        }
 
-		public async Task<IActionResult> AllCinemas()
-		{
-			var data = await cinemaService.GetAllCinemasAsync();
-			return View(data);
-		}
-		[HttpGet]
-		public IActionResult Create()
-		{
-			return View();
-		}
+        public async Task<IActionResult> AllCinemas()
+        {
+            var data = await cinemaService.GetAllCinemasAsync();
+            return View(data);
+        }
 
-		[HttpPost]
-		public async Task<IActionResult> Create(CinemasViewModel cinemaModel)
-		{
-			if (!ModelState.IsValid)
-			{
-				return View();
-			}
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-			await cinemaService.AddCinemaAsync(cinemaModel);
+        [HttpPost]
+        public async Task<IActionResult> Create(CinemasViewModel cinemaModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
 
-			return RedirectToAction("AllCinemas");
-		}
+            await cinemaService.AddCinemaAsync(cinemaModel);
 
-		[HttpGet]
-		public async Task<IActionResult> Details(int id)
-		{
-			var cinemaModel = await cinemaService.GetCinemaByIdAsync(id);
+            return RedirectToAction("AllCinemas");
+        }
 
-			return View(cinemaModel);
-		}
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var cinemaModel = await cinemaService.GetCinemaByIdAsync(id);
 
-		[HttpGet]
-		public async Task<IActionResult> Edit(int id)
-		{
+            return View(cinemaModel);
+        }
 
-			var cinemaDetails = await cinemaService.GetCinemaByIdAsync(id);
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
 
-			return View(cinemaDetails);
-		}
+            var cinemaDetails = await cinemaService.GetCinemaByIdAsync(id);
 
-		[HttpPost]
-		public async Task<IActionResult> Edit(CinemasViewModel cinemaModel)
-		{
-			if (!ModelState.IsValid)
-			{
-				return View(cinemaModel.Id);
-			}
-			await cinemaService.UpdateCinemaAsync(cinemaModel);
-			return RedirectToAction("AllCinemas");
-		}
+            return View(cinemaDetails);
+        }
 
-		[HttpGet]
-		public async Task<IActionResult> Delete(int id)
-		{
-			await cinemaService.DeleteCinemaAsync(id);
-			return RedirectToAction("AllCinemas");
-		}
-	}
+        [HttpPost]
+        public async Task<IActionResult> Edit(CinemasViewModel cinemaModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(cinemaModel.Id);
+            }
+            await cinemaService.UpdateCinemaAsync(cinemaModel);
+            return RedirectToAction("AllCinemas");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await cinemaService.DeleteCinemaAsync(id);
+            return RedirectToAction("AllCinemas");
+        }
+    }
 }
