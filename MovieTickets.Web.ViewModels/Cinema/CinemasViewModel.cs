@@ -2,7 +2,7 @@
 
 namespace MovieTickets.Web.ViewModels.Cinema
 {
-	public class AllCinemasViewModel
+	public class CinemasViewModel
 	{
 		public int Id { get; set; }
 		public string Name { get; set; } = null!;

@@ -1,7 +1,7 @@
-﻿@model ActorViewModel
+﻿@model CinemasViewModel
 
 @{
-    ViewData["Title"] = "Edit Actor";
+    ViewData["Title"] = "Edit Cinema";
 }
 
 <div class="row text">
@@ -18,9 +18,9 @@
                         <img id="preview" />
                     </div>
                     <div class="form-group">
-                        <label asp-for="ImageUrl" class="control-label"></label>
-                        <input asp-for="ImageUrl" class="form-control" />
-                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        <label asp-for="LogoUrl" class="control-label"></label>
+                        <input asp-for="LogoUrl" class="form-control" />
+                        <span asp-validation-for="LogoUrl" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Name" class="control-label"></label>
@@ -32,10 +32,24 @@
                         <input asp-for="Description" class="form-control" />
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
-
                     <div class="form-group">
+                        <label asp-for="Country" class="control-label"></label>
+                        <input asp-for="Country" class="form-control" />
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="City" class="control-label"></label>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Street" class="control-label"></label>
+                        <input asp-for="Street" class="form-control" />
+                        <span asp-validation-for="Street" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <a class="btn btn-outline-secondary" asp-action="AllCinemas">Show All</a>
                         <input type="submit" value="Update" class="btn btn-outline-success float-end" />
-                        <a class="btn btn-outline-secondary" asp-action="AllActors">Show All</a>
                     </div>
                 </form>
             </div>
@@ -44,4 +58,6 @@
 </div>
 
 
-@section Scripts{<script src="~/js/Image.js"></script>}
+@section Scripts{
+    <script src="~/js/Logo.js"></script>
+}

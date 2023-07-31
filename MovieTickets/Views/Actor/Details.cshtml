@@ -1,13 +1,13 @@
 ﻿@model ActorViewModel;
 
 @{
-	ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details for Actor";
 }
 
 <div class="row text">
 	<div class="col-md-8 offset-2">
 		<p>
-			<h1 class="text-center">Detail for @Model.Name</h1>
+			<h1 class="text-center">@ViewData["Title"] @Model.Name</h1>
 		</p>
 		<div class="row">
 			<div class="col-md-8 offset-2">
@@ -36,14 +36,5 @@
 </div>
 
 @section Scripts{
-	<script>
-		$(document).ready(function () {
-			var output = document.getElementById('preview');
-			output.src = $("#ImageUrl").val();
-		})
-		$("#ImageUrl").on("change", function () {
-			var output = document.getElementById('preview');
-			output.src = $(this).val();
-		})
-	</script>
+	<script src="~/js/Image.js"></script>
 }
