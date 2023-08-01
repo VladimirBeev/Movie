@@ -4,7 +4,7 @@ using static MovieTickets.Common.EntityValidationConstant.ProducerConstants;
 
 namespace MovieTickets.Web.ViewModels.Producer
 {
-	public class AllProducersViewModel
+	public class ProducersViewModel
 	{
 		[Key]
         public int Id { get; set; }

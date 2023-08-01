@@ -19,6 +19,7 @@
                                     {
                                         <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
                                     }
+                                    <a class="text-white float-end" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
                                 </h5>
                             </p>
                         </div>
@@ -70,4 +71,9 @@
         </div>
     }
 </div>
-@*@await Html.PartialAsync("_CreateItem", "Movies") *@
+<div style="position: fixed; right: 25px; bottom: 75px;" class="text-white">
+    <a asp-controller="Movie" asp-action="Create" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Add New
+    </a>
+</div>
+@*@await Html.PartialAsync("_CreateItem", "Movies")*@

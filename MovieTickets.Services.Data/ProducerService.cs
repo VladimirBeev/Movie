@@ -16,7 +16,7 @@ namespace MovieTickets.Services.Data
             this.dbContext = dbContext;
         }
 
-        public async Task AddProducerAsync(AllProducersViewModel producerModel)
+        public async Task AddProducerAsync(ProducersViewModel producerModel)
         {
             Producer producer = new Producer();
             producer.Id = producerModel.Id;
@@ -38,10 +38,10 @@ namespace MovieTickets.Services.Data
             }
         }
 
-        public async Task<IEnumerable<AllProducersViewModel>> GetAllProducersAsync()
+        public async Task<IEnumerable<ProducersViewModel>> GetAllProducersAsync()
         {
             return await dbContext.Producers
-                .Select(p => new AllProducersViewModel()
+                .Select(p => new ProducersViewModel()
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -51,13 +51,13 @@ namespace MovieTickets.Services.Data
                 }).ToListAsync();
         }
 
-        public async Task<AllProducersViewModel> GetProducerByIdAsync(int id)
+        public async Task<ProducersViewModel> GetProducerByIdAsync(int id)
         {
             var producer = await dbContext.Producers.FirstOrDefaultAsync(p => p.Id == id);
 
             if (producer != null)
             {
-                var producerModel = new AllProducersViewModel()
+                var producerModel = new ProducersViewModel()
                 {
                     Id = producer.Id,
                     Name = producer.Name,
@@ -71,7 +71,7 @@ namespace MovieTickets.Services.Data
             return null!;
         }
 
-        public async Task<AllProducersViewModel> UpdateProducerAsync(AllProducersViewModel updateProducer)
+        public async Task<ProducersViewModel> UpdateProducerAsync(ProducersViewModel updateProducer)
         {
             var producer = await dbContext.Producers.FirstOrDefaultAsync(p => p.Id == updateProducer.Id);
 

@@ -27,7 +27,7 @@ namespace MovieTickets.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AllProducersViewModel producerModel)
+        public async Task<IActionResult> Create(ProducersViewModel producerModel)
         {
             if (!ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace MovieTickets.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(AllProducersViewModel producerModel)
+        public async Task<IActionResult> Edit(ProducersViewModel producerModel)
         {
             if (!ModelState.IsValid)
             {

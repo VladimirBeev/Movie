@@ -1,12 +1,12 @@
-﻿using Microsoft.Data.SqlClient.Server;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using MovieTickets.Data;
+using MovieTickets.Data.EntityModels;
 using MovieTickets.Services.Data.Interfaces;
+using MovieTickets.Web.ViewModels.Actor;
+using MovieTickets.Web.ViewModels.Cinema;
 using MovieTickets.Web.ViewModels.Movie;
-
-using System;
-using System.Globalization;
+using MovieTickets.Web.ViewModels.Producer;
 
 namespace MovieTickets.Services.Data
 {
@@ -17,6 +17,40 @@ namespace MovieTickets.Services.Data
 		public MovieService(MovieDbContext dbContext)
 		{
 			this.dbContext = dbContext;
+		}
+
+		public async Task AddMovieAsync(NewMovie moviesViewModel)
+		{
+			Movie movie = new Movie();
+
+			movie.Title = moviesViewModel.Title;
+			movie.Description = moviesViewModel.Description;
+			movie.Price = moviesViewModel.Price;
+			movie.StartDate = moviesViewModel.StartDate;
+			movie.EndDate = moviesViewModel.EndDate;
+			movie.ImageUrl = moviesViewModel.ImageUrl;
+			movie.CinemaId = moviesViewModel.CinemaId;
+			movie.MovieCategory = moviesViewModel.MovieCategory;
+			movie.ProducerId = moviesViewModel.ProducerId;
+
+			await dbContext.Movies.AddAsync(movie);
+			await dbContext.SaveChangesAsync();
+
+			foreach (var actorId in moviesViewModel.ActorIds)
+			{
+				var newActorMovie = new ActorMovie();
+				newActorMovie.ActorId = actorId;
+				newActorMovie.MovieId = movie.Id;
+
+				await dbContext.ActorMovies.AddAsync(newActorMovie);
+			}
+
+			await dbContext.SaveChangesAsync();
+		}
+
+		public Task DeleteMovieAsync(int id)
+		{
+			throw new NotImplementedException();
 		}
 
 		public async Task<IEnumerable<AllMoviesViewModel>> GetAllMoviesAsync()
@@ -36,6 +70,99 @@ namespace MovieTickets.Services.Data
 					Producer = m.Producer.Name
 
 				}).ToListAsync();
+		}
+
+		public async Task<Movie> GetMovieByIdAsync(int id)
+		{
+			Movie? movie = await dbContext.Movies
+				.Include(c => c.Cinema)
+				.Include(p => p.Producer)
+				.Include(am => am.ActorMovies)
+				.ThenInclude(a => a.Actor)
+				.FirstOrDefaultAsync(n => n.Id == id);
+
+			return movie;
+		}
+
+		public async Task<NewMovieDropDown> GetNewMovieDropDownAsync()
+		{
+			var response = new NewMovieDropDown();
+
+			response.Actors = await dbContext.Actors
+				.Select(a => new ActorViewModel()
+				{
+					Id = a.Id,
+					Name = a.Name,
+					Description = a.Description,
+					ImageUrl = a.ImageUrl
+				})
+				.OrderBy(a => a.Name)
+				.ToListAsync();
+
+			response.Cinemas = await dbContext.Cinemas
+				.Select(c => new CinemasViewModel()
+				{
+					Id = c.Id,
+					Name = c.Name,
+					Description = c.Description,
+					LogoUrl = c.LogoUrl,
+					Country = c.Country,
+					City = c.City,
+					Street = c.Street
+				})
+				.ToListAsync();
+
+			response.Producers = await dbContext.Producers
+				.Select(p => new ProducersViewModel()
+				{
+					Id = p.Id,
+					Name = p.Name,
+					Description = p.Description,
+					ImageUrl = p.ImageUrl
+				})
+				.ToListAsync();
+
+			return response;
+		}
+
+		public async Task<NewMovie> UpdateMovieAsync(NewMovie updateMovieViewModel)
+		{
+			var movieToUpdate = await dbContext.Movies.FirstOrDefaultAsync(m => m.Id == updateMovieViewModel.Id);
+
+			if (movieToUpdate != null)
+			{
+				movieToUpdate.Title = updateMovieViewModel.Title;
+				movieToUpdate.Description = updateMovieViewModel.Description;
+				movieToUpdate.Price = updateMovieViewModel.Price;
+				movieToUpdate.ImageUrl = updateMovieViewModel.ImageUrl;
+				movieToUpdate.CinemaId = updateMovieViewModel.CinemaId;
+				movieToUpdate.StartDate = updateMovieViewModel.StartDate;
+				movieToUpdate.EndDate = updateMovieViewModel.EndDate;
+				movieToUpdate.MovieCategory = updateMovieViewModel.MovieCategory;
+				movieToUpdate.ProducerId = updateMovieViewModel.ProducerId;
+
+				await dbContext.SaveChangesAsync();
+			}
+
+			var existingActorsDb = await dbContext.ActorMovies
+				.Where(a => a.MovieId == updateMovieViewModel.Id)
+				.ToListAsync();
+
+			dbContext.RemoveRange(existingActorsDb);
+			await dbContext.SaveChangesAsync();
+
+			foreach (var actorId in updateMovieViewModel.ActorIds)
+			{
+				var newActorMovie = new ActorMovie();
+				newActorMovie.ActorId = actorId;
+				newActorMovie.MovieId = updateMovieViewModel.Id;
+
+				await dbContext.ActorMovies.AddAsync(newActorMovie);
+			}
+
+			await dbContext.SaveChangesAsync();
+
+			return updateMovieViewModel;
 		}
 	}
 }
