@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using MovieTickets.Data;
+using Shopping;
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = 
-    builder.Configuration.GetConnectionString("DefaultConnection");
-    builder.Services.AddDbContext<MovieDbContext>(options =>
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<MovieDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
@@ -35,9 +37,21 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     .AddEntityFrameworkStores<MovieDbContext>();
 
 
+
 builder.Services.AddApplicationServices(typeof(IActorService));
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+
 //builder.Services.AddScoped<IActorService, ActorService>();
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+});
+
 
 builder.Services.AddControllersWithViews();
 
@@ -58,6 +72,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

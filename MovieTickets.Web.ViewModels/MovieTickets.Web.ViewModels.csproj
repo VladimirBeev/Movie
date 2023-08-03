@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MovieTickets.Common\MovieTickets.Common.csproj" />
     <ProjectReference Include="..\MovieTickets.Data.EntityModels\MovieTickets.Data.EntityModels.csproj" />
+    <ProjectReference Include="..\Shopping\Shopping.csproj" />
   </ItemGroup>
 
 </Project>

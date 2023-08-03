@@ -28,4 +28,7 @@ public class MovieDbContext : IdentityDbContext
     public DbSet<ActorMovie> ActorMovies { get; set; } = null!;
     public DbSet<Cinema> Cinemas { get; set; } = null!; 
     public DbSet<Producer> Producers { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<OrderItem> OrderItems { get; set; } = null!;
+    public DbSet<ShoppingCartItems> ShoppingCartItems { get; set; } = null!;
 }
