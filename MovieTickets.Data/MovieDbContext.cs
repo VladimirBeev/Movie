@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 using MovieTickets.Data.EntityModels;
@@ -7,7 +8,7 @@ using System.Reflection;
 
 namespace MovieTickets.Data;
 
-public class MovieDbContext : IdentityDbContext
+public class MovieDbContext : IdentityDbContext<ApplicationUser>
 {
     public MovieDbContext(DbContextOptions<MovieDbContext> options)
         : base(options)

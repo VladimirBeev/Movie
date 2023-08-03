@@ -18,10 +18,10 @@ namespace MovieTickets.Data.EntityModels
 
         public int MovieId { get; set; }
         [ForeignKey(nameof(MovieId))]
-        public Movie Movie { get; set; }
+        public Movie? Movie { get; set; }
 
         public int OrderId { get; set; }
 		[ForeignKey(nameof(OrderId))]
-		public Order Order { get; set; }
+		public Order Order { get; set; } = null!;
     }
 }

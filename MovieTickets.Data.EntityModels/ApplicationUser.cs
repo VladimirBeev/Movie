@@ -9,6 +9,6 @@ namespace MovieTickets.Data.EntityModels
 	{
 		[DisplayName("Fill Name")]
 		[Required]
-		public string FullName { get; set; } = null!;
+		public string FullName { get; set; }
 	}
 }
