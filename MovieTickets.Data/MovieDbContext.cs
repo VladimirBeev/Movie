@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace MovieTickets.Data;
 
-public class MovieDbContext : IdentityDbContext<ApplicationUser>
+public class MovieDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
     public MovieDbContext(DbContextOptions<MovieDbContext> options)
         : base(options)

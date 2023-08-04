@@ -25,7 +25,7 @@ namespace MovieTickets.Services.Data
 
 			if (userRole != "Admin")
 			{
-				orders = orders.Where(u => u.UserId == userId).ToList();
+				orders = orders.Where(u => u.UserId.ToString() == userId).ToList();
 			}
 
 			return orders;
@@ -33,25 +33,30 @@ namespace MovieTickets.Services.Data
 
 		public async Task StoreOrderAsync(List<ShoppingCartItems> items, string userId, string userEmail)
 		{
-			var order = new Order();
-			order.UserId = userId;
-			order.Email = userEmail;
-
-			await dbContext.Orders.AddAsync(order);
-			await dbContext.SaveChangesAsync();
-
-			foreach (var item in items)
+			var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
+			if (user == null)
 			{
-				var orderItem = new OrderItem();
-				orderItem.Amount = item.Amount;
-				orderItem.MovieId = item.Movie.Id;
-				orderItem.OrderId = order.Id;
-				orderItem.Price = item.Movie.Price;
+                var order = new Order();
+                order.UserId = user.Id;
+                order.Email = userEmail;
 
-				await dbContext.OrderItems.AddAsync(orderItem);
-			}
+                await dbContext.Orders.AddAsync(order);
+                await dbContext.SaveChangesAsync();
 
-			await dbContext.SaveChangesAsync();
+                foreach (var item in items)
+                {
+                    var orderItem = new OrderItem();
+                    orderItem.Amount = item.Amount;
+                    orderItem.MovieId = item.Movie.Id;
+                    orderItem.OrderId = order.Id;
+                    orderItem.Price = item.Movie.Price;
+
+                    await dbContext.OrderItems.AddAsync(orderItem);
+                }
+
+                await dbContext.SaveChangesAsync();
+            }
+			
 		}
 	}
 }

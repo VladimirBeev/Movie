@@ -60,5 +60,17 @@
 
 			public const int MovieImageUrlMaxLength = 2048;
 		}
+
+		public static class OrderConstant
+		{
+			public const int OrderEmailMinLength = 3;
+			public const int OrderEmailMaxLength = 50;
+		}
+
+		public static class UserConstant
+		{
+			public const int FirstNameMinLength = 1;
+			public const int FirstNameMaxLength = 30;
+        }
 	}
 }

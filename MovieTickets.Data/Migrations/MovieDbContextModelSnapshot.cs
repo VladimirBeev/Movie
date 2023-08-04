@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieTickets.Data;
 
@@ -12,10 +11,9 @@ using MovieTickets.Data;
 namespace MovieTickets.Data.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20230803205505_AddAccount")]
-    partial class AddAccount
+    partial class MovieDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,10 +22,11 @@ namespace MovieTickets.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -51,7 +50,7 @@ namespace MovieTickets.Data.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,9 +64,8 @@ namespace MovieTickets.Data.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -76,7 +74,7 @@ namespace MovieTickets.Data.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,9 +88,8 @@ namespace MovieTickets.Data.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -101,20 +98,21 @@ namespace MovieTickets.Data.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -123,13 +121,13 @@ namespace MovieTickets.Data.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -138,16 +136,18 @@ namespace MovieTickets.Data.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -324,8 +324,9 @@ namespace MovieTickets.Data.Migrations
 
             modelBuilder.Entity("MovieTickets.Data.EntityModels.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -536,12 +537,12 @@ namespace MovieTickets.Data.Migrations
                             Id = 1,
                             CinemaId = 3,
                             Description = "This is the Life movie description",
-                            EndDate = new DateTime(2023, 8, 13, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4066),
+                            EndDate = new DateTime(2023, 8, 14, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2026),
                             ImageUrl = "http://dotnethow.net/images/movies/movie-3.jpeg",
                             MovieCategory = 4,
                             Price = 39m,
                             ProducerId = 3,
-                            StartDate = new DateTime(2023, 7, 24, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4020),
+                            StartDate = new DateTime(2023, 7, 25, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(1985),
                             Title = "Life"
                         },
                         new
@@ -549,12 +550,12 @@ namespace MovieTickets.Data.Migrations
                             Id = 2,
                             CinemaId = 1,
                             Description = "This is the Shawshank Redemption movie description",
-                            EndDate = new DateTime(2023, 8, 6, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4079),
+                            EndDate = new DateTime(2023, 8, 7, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2035),
                             ImageUrl = "http://dotnethow.net/images/movies/movie-1.jpeg",
                             MovieCategory = 1,
                             Price = 29m,
                             ProducerId = 1,
-                            StartDate = new DateTime(2023, 8, 3, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4076),
+                            StartDate = new DateTime(2023, 8, 4, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2033),
                             Title = "The Shawshank Redemption"
                         },
                         new
@@ -562,12 +563,12 @@ namespace MovieTickets.Data.Migrations
                             Id = 3,
                             CinemaId = 4,
                             Description = "This is the Ghost movie description",
-                            EndDate = new DateTime(2023, 8, 10, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4086),
+                            EndDate = new DateTime(2023, 8, 11, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2041),
                             ImageUrl = "http://dotnethow.net/images/movies/movie-4.jpeg",
                             MovieCategory = 7,
                             Price = 19m,
                             ProducerId = 4,
-                            StartDate = new DateTime(2023, 8, 3, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4084),
+                            StartDate = new DateTime(2023, 8, 4, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2039),
                             Title = "Ghost"
                         },
                         new
@@ -575,12 +576,12 @@ namespace MovieTickets.Data.Migrations
                             Id = 4,
                             CinemaId = 1,
                             Description = "This is the Race movie description",
-                            EndDate = new DateTime(2023, 7, 29, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4094),
+                            EndDate = new DateTime(2023, 7, 30, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2046),
                             ImageUrl = "http://dotnethow.net/images/movies/movie-6.jpeg",
                             MovieCategory = 4,
                             Price = 49m,
                             ProducerId = 2,
-                            StartDate = new DateTime(2023, 7, 24, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4091),
+                            StartDate = new DateTime(2023, 7, 25, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2044),
                             Title = "Race"
                         },
                         new
@@ -588,12 +589,12 @@ namespace MovieTickets.Data.Migrations
                             Id = 5,
                             CinemaId = 1,
                             Description = "This is the Scoob movie description",
-                            EndDate = new DateTime(2023, 8, 1, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4101),
+                            EndDate = new DateTime(2023, 8, 2, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2051),
                             ImageUrl = "http://dotnethow.net/images/movies/movie-7.jpeg",
                             MovieCategory = 2,
                             Price = 59m,
                             ProducerId = 3,
-                            StartDate = new DateTime(2023, 7, 24, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4098),
+                            StartDate = new DateTime(2023, 7, 25, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2049),
                             Title = "Scoob"
                         },
                         new
@@ -601,31 +602,29 @@ namespace MovieTickets.Data.Migrations
                             Id = 6,
                             CinemaId = 1,
                             Description = "This is the Cold Soles movie description",
-                            EndDate = new DateTime(2023, 8, 23, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4111),
+                            EndDate = new DateTime(2023, 8, 24, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2058),
                             ImageUrl = "http://dotnethow.net/images/movies/movie-8.jpeg",
                             MovieCategory = 3,
                             Price = 79m,
                             ProducerId = 5,
-                            StartDate = new DateTime(2023, 8, 6, 23, 55, 4, 398, DateTimeKind.Local).AddTicks(4108),
+                            StartDate = new DateTime(2023, 8, 7, 23, 13, 56, 604, DateTimeKind.Local).AddTicks(2056),
                             Title = "Cold Soles"
                         });
                 });
 
             modelBuilder.Entity("MovieTickets.Data.EntityModels.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -636,11 +635,9 @@ namespace MovieTickets.Data.Migrations
 
             modelBuilder.Entity("MovieTickets.Data.EntityModels.OrderItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -648,8 +645,8 @@ namespace MovieTickets.Data.Migrations
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(8, 2)
@@ -677,7 +674,8 @@ namespace MovieTickets.Data.Migrations
                         .HasColumnType("nvarchar(2000)");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -728,11 +726,9 @@ namespace MovieTickets.Data.Migrations
 
             modelBuilder.Entity("MovieTickets.Data.EntityModels.ShoppingCartItems", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -751,16 +747,16 @@ namespace MovieTickets.Data.Migrations
                     b.ToTable("ShoppingCartItems");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("MovieTickets.Data.EntityModels.ApplicationUser", null)
                         .WithMany()
@@ -769,7 +765,7 @@ namespace MovieTickets.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("MovieTickets.Data.EntityModels.ApplicationUser", null)
                         .WithMany()
@@ -778,9 +774,9 @@ namespace MovieTickets.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -793,7 +789,7 @@ namespace MovieTickets.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("MovieTickets.Data.EntityModels.ApplicationUser", null)
                         .WithMany()

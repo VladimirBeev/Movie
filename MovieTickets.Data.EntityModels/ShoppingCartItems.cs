@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MovieTickets.Data.EntityModels
 {
-	public class ShoppingCartItems
+    public class ShoppingCartItems
 	{
 		[Key]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 
-        public Movie Movie { get; set; }
+        [Required]
+        public Movie Movie { get; set; } = null!;
 
         public int Amount { get; set; }
 
-        public string ShoppingCartId { get; set; }
+        [Required]
+        public string ShoppingCartId { get; set; } = null!;
 
     }
 }

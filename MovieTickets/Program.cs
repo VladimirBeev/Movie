@@ -15,7 +15,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<MovieDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     {
         options.SignIn.RequireConfirmedAccount = builder.Configuration
             .GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
@@ -35,6 +35,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 		options.Password.RequireUppercase = builder.Configuration
             .GetValue<bool>("Identity:SignIn:RequireUppercase");
     })
+    .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<MovieDbContext>();
 
 

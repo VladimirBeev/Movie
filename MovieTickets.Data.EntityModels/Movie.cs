@@ -17,6 +17,7 @@ namespace MovieTickets.Data.EntityModels
         [Required]
         [MaxLength(MovieDescriptionMaxLength)]
         public string Description { get; set; } = null!;
+
         public decimal Price { get; set; }
 
         [MaxLength(MovieImageUrlMaxLength)]
