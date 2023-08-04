@@ -1,25 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-using MovieTickets.Data.EntityModels;
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.ViewModels.Actor;
 
 namespace MovieTickets.Web.Controllers
 {
-	public class ActorController : Controller
+    [Authorize(Roles = "Admin")]
+    public class ActorController : Controller
     {
         private readonly IActorService actorService;
 
-		public ActorController(IActorService actorService)
-		{
-			this.actorService = actorService;
-		}
+        public ActorController(IActorService actorService)
+        {
+            this.actorService = actorService;
+        }
 
         [HttpGet]
-		public async Task<IActionResult> AllActors()
+        [AllowAnonymous]
+        public async Task<IActionResult> AllActors()
         {
-            var data = await actorService.GetAllActorsAsync();
-            return View(data);
+            var allActors = await actorService.GetAllActorsAsync();
+
+            if (allActors == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(allActors);
         }
 
         [HttpGet]
@@ -33,20 +41,25 @@ namespace MovieTickets.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(actorModel);
             }
-            
+
             await actorService.AddActorAsync(actorModel);
 
             return RedirectToAction("AllActors");
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var actorModel = await actorService.GetActorByIdAsync(id);
+            var actorDetails = await actorService.GetActorByIdAsync(id);
 
-            return View(actorModel);
+            if (actorDetails == null)
+            {
+                return View("NotFound");
+            }
+            return View(actorDetails);
         }
 
         [HttpGet]
@@ -54,19 +67,25 @@ namespace MovieTickets.Web.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 
-            var actorDetails = await actorService.GetActorByIdAsync(id);
+            var actorEdit = await actorService.GetActorByIdAsync(id);
 
-            return View(actorDetails);
+            if (actorEdit == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(actorEdit);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ActorViewModel model)
+        public async Task<IActionResult> Edit(ActorViewModel actorModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(model.Id);
+                return View(actorModel.Id);
             }
-            await actorService.UpdateActorAsync(model);
+            await actorService.UpdateActorAsync(actorModel);
+
             return RedirectToAction("AllActors");
         }
 
@@ -74,6 +93,7 @@ namespace MovieTickets.Web.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await actorService.DeleteActorAsync(id);
+
             return RedirectToAction("AllActors");
         }
     }

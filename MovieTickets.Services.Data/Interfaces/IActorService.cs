@@ -1,5 +1,4 @@
-﻿using MovieTickets.Data.EntityModels;
-using MovieTickets.Web.ViewModels.Actor;
+﻿using MovieTickets.Web.ViewModels.Actor;
 
 namespace MovieTickets.Services.Data.Interfaces
 {

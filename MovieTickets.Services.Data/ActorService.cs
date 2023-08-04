@@ -33,7 +33,9 @@ namespace MovieTickets.Services.Data
         public async Task DeleteActorAsync(int id)
         {
             var actor = await dbContext.Actors.FirstOrDefaultAsync(a => a.Id == id);
+
             dbContext.Actors.Remove(actor);
+
             await dbContext.SaveChangesAsync();
         }
 
@@ -49,8 +51,10 @@ namespace MovieTickets.Services.Data
                     Description = actor.Description,
                     ImageUrl = actor.ImageUrl,
                 };
+
                 return actorModel;
             }
+
             return null!;
         }
 
@@ -74,6 +78,7 @@ namespace MovieTickets.Services.Data
             {
                 return null!;
             }
+
             actorToEdit.Id = model.Id;
             actorToEdit.Name = model.Name;
             actorToEdit.Description = model.Description;

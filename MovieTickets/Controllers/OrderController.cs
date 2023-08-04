@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.ViewModels.Cart;
@@ -9,32 +10,37 @@ using System.Security.Claims;
 
 namespace MovieTickets.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class OrderController : Controller
-	{
-		private readonly ShoppingCart shoppingCart;
-		private readonly IMovieService movieService;
-		private readonly IOrderService orderService;
+    {
+        private readonly ShoppingCart shoppingCart;
+        private readonly IMovieService movieService;
+        private readonly IOrderService orderService;
 
-        public OrderController(ShoppingCart shoppingCart, IMovieService movieService, IOrderService orderService)
+        public OrderController(ShoppingCart shoppingCart,
+            IMovieService movieService, IOrderService orderService)
         {
-			this.shoppingCart = shoppingCart;
-			this.movieService = movieService;
-			this.orderService = orderService;
+            this.shoppingCart = shoppingCart;
+            this.movieService = movieService;
+            this.orderService = orderService;
         }
 
 
         public async Task<IActionResult> AllOrders()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             string userRole = User.FindFirstValue(ClaimTypes.Role);
 
             var orders = await orderService.GetAllOrdersByUserIdAndRoleAsync(userId, userRole);
+
             return View(orders);
         }
 
         public IActionResult ShoppingCart()
         {
             var items = shoppingCart.GetShoppingCartItems();
+
             shoppingCart.ShoppingCartItems = items;
 
             var response = new ShoppingCartViewModel()
@@ -71,10 +77,13 @@ namespace MovieTickets.Web.Controllers
         public async Task<IActionResult> CompleteOrder()
         {
             var items = shoppingCart.GetShoppingCartItems();
+
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
 
             await orderService.StoreOrderAsync(items, userId, userEmailAddress);
+
             await shoppingCart.ClearShoppingCartAsync();
 
             return View("OrderCompleted");

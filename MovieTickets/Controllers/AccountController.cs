@@ -24,6 +24,7 @@ namespace MovieTickets.Web.Controllers
         public async Task<IActionResult> User()
         {
             var users = await movieDbContext.Users.ToListAsync();
+
             return View(users);
         }
 
@@ -47,22 +48,27 @@ namespace MovieTickets.Web.Controllers
 
             if (user != null)
             {
-                var passworCheck = await userManager.CheckPasswordAsync(user, loginViewModel.Password);
+                var passworCheck = await userManager
+                    .CheckPasswordAsync(user, loginViewModel.Password);
+
                 if (passworCheck)
                 {
                     var result = await signInManager
                         .PasswordSignInAsync(user, loginViewModel.Password, false, false);
+
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("AllMovies","Movie");
+                        return RedirectToAction("AllMovies", "Movie");
                     }
                 }
 
                 TempData["Error"] = "Wrong credentials. Please, try again!";
+
                 return View(loginViewModel);
             }
 
             TempData["Error"] = "Wrong credentials. Please, try again!";
+
             return View(loginViewModel);
         }
 
@@ -70,6 +76,7 @@ namespace MovieTickets.Web.Controllers
         public IActionResult Register()
         {
             var registerViewModel = new RegisterViewModel();
+
             return View(registerViewModel);
         }
 
@@ -86,6 +93,7 @@ namespace MovieTickets.Web.Controllers
             if (user != null)
             {
                 TempData["Error"] = "This email address is already in use";
+
                 return View(registerViewModel);
             }
 
@@ -110,6 +118,7 @@ namespace MovieTickets.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
+
             return RedirectToAction("Index", "Movies");
         }
 

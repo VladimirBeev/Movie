@@ -11,8 +11,8 @@ namespace Shopping
 	{
 		public MovieDbContext _context { get; set; }
 
-		public string ShoppingCartId { get; set; }
-		public List<ShoppingCartItems> ShoppingCartItems { get; set; }
+		public string ShoppingCartId { get; set; } = null!;
+		public List<ShoppingCartItems> ShoppingCartItems { get; set; } = new List<ShoppingCartItems>();
 
 		public ShoppingCart(MovieDbContext context)
 		{
@@ -32,7 +32,8 @@ namespace Shopping
 
 		public void AddItemToCart(Movie movie)
 		{
-			var shoppingCartItem = _context.ShoppingCartItems.FirstOrDefault(n => n.Movie.Id == movie.Id && n.ShoppingCartId == ShoppingCartId);
+			var shoppingCartItem = _context.ShoppingCartItems
+				.FirstOrDefault(n => n.Movie.Id == movie.Id && n.ShoppingCartId == ShoppingCartId);
 
 			if (shoppingCartItem == null)
 			{
@@ -54,7 +55,8 @@ namespace Shopping
 
 		public void RemoveItemFromCart(Movie movie)
 		{
-			var shoppingCartItem = _context.ShoppingCartItems.FirstOrDefault(n => n.Movie.Id == movie.Id && n.ShoppingCartId == ShoppingCartId);
+			var shoppingCartItem = _context.ShoppingCartItems
+				.FirstOrDefault(n => n.Movie.Id == movie.Id && n.ShoppingCartId == ShoppingCartId);
 
 			if (shoppingCartItem != null)
 			{
@@ -72,15 +74,29 @@ namespace Shopping
 
 		public List<ShoppingCartItems> GetShoppingCartItems()
 		{
-			return ShoppingCartItems ?? (ShoppingCartItems = _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Include(n => n.Movie).ToList());
+			return ShoppingCartItems ?? 
+				(ShoppingCartItems = _context.ShoppingCartItems
+				.Where(n => n.ShoppingCartId == ShoppingCartId)
+				.Include(n => n.Movie)
+				.ToList());
 		}
 
-		public decimal GetShoppingCartTotal() => _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Select(n => n.Movie.Price * n.Amount).Sum();
+		public decimal GetShoppingCartTotal()
+		{
+            return  _context.ShoppingCartItems
+				.Where(n => n.ShoppingCartId == ShoppingCartId)
+				.Select(n => n.Movie.Price * n.Amount)
+				.Sum();
+        }
 
 		public async Task ClearShoppingCartAsync()
 		{
-			var items = await _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).ToListAsync();
+			var items = await _context.ShoppingCartItems
+				.Where(n => n.ShoppingCartId == ShoppingCartId)
+				.ToListAsync();
+
 			_context.ShoppingCartItems.RemoveRange(items);
+
 			await _context.SaveChangesAsync();
 		}
 	}

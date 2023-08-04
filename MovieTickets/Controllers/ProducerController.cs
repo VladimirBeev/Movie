@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.ViewModels.Producer;
 
 namespace MovieTickets.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ProducerController : Controller
     {
         private readonly IProducerService producerService;
@@ -14,10 +16,18 @@ namespace MovieTickets.Web.Controllers
             this.producerService = producerService;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> AllProducers()
         {
-            var data = await producerService.GetAllProducersAsync();
-            return View(data);
+            var allProducers = await producerService.GetAllProducersAsync();
+
+            if (allProducers == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(allProducers);
         }
 
         [HttpGet]
@@ -40,20 +50,30 @@ namespace MovieTickets.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var producerModel = await producerService.GetProducerByIdAsync(id);
+            var producerDetails = await producerService.GetProducerByIdAsync(id);
 
-            return View(producerModel);
+            if (producerDetails == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(producerDetails);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            var producerEdit = await producerService.GetProducerByIdAsync(id);
 
-            var producerModel = await producerService.GetProducerByIdAsync(id);
+            if (producerEdit == null)
+            {
+                return View("NotFound");
+            }
 
-            return View(producerModel);
+            return View(producerEdit);
         }
 
         [HttpPost]
@@ -64,6 +84,7 @@ namespace MovieTickets.Web.Controllers
                 return View(producerModel.Id);
             }
             await producerService.UpdateProducerAsync(producerModel);
+
             return RedirectToAction("AllProducers");
         }
 
@@ -71,6 +92,7 @@ namespace MovieTickets.Web.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await producerService.DeleteProducerAsync(id);
+
             return RedirectToAction("AllProducers");
         }
     }

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.ViewModels.Cinema;
 
 namespace MovieTickets.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CinemaController : Controller
     {
         private readonly ICinemaService cinemaService;
@@ -14,10 +16,18 @@ namespace MovieTickets.Web.Controllers
             this.cinemaService = cinemaService;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> AllCinemas()
         {
-            var data = await cinemaService.GetAllCinemasAsync();
-            return View(data);
+            var allCinemas = await cinemaService.GetAllCinemasAsync();
+
+            if (allCinemas == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(allCinemas);
         }
 
         [HttpGet]
@@ -40,20 +50,31 @@ namespace MovieTickets.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var cinemaModel = await cinemaService.GetCinemaByIdAsync(id);
+            var detailsModel = await cinemaService.GetCinemaByIdAsync(id);
 
-            return View(cinemaModel);
+            if (detailsModel == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(detailsModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
 
-            var cinemaDetails = await cinemaService.GetCinemaByIdAsync(id);
+            var cinemaEdit = await cinemaService.GetCinemaByIdAsync(id);
 
-            return View(cinemaDetails);
+            if (cinemaEdit == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(cinemaEdit);
         }
 
         [HttpPost]
@@ -64,6 +85,7 @@ namespace MovieTickets.Web.Controllers
                 return View(cinemaModel.Id);
             }
             await cinemaService.UpdateCinemaAsync(cinemaModel);
+
             return RedirectToAction("AllCinemas");
         }
 
@@ -71,6 +93,7 @@ namespace MovieTickets.Web.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await cinemaService.DeleteCinemaAsync(id);
+
             return RedirectToAction("AllCinemas");
         }
     }
