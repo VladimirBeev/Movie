@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using MovieTickets.Services.Data.Interfaces;
+using MovieTickets.Web.Infrastructure.Extensions;
 using MovieTickets.Web.ViewModels.Cart;
 
 using Shopping;
@@ -25,9 +26,13 @@ namespace MovieTickets.Web.Controllers
 
         public async Task<IActionResult> AllOrders()
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            string userRole = User.FindFirstValue(ClaimTypes.Role);
+            //string userRole = User.FindFirstValue(ClaimTypes.Role);
+
+            string userId = User.Id();
+
+            string userRole = User.Role();
 
             var orders = await orderService.GetAllOrdersByUserIdAndRoleAsync(userId, userRole);
 
