@@ -21,7 +21,7 @@ namespace MovieTickets.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> User()
+        public async Task<IActionResult> Users()
         {
             var users = await movieDbContext.Users.ToListAsync();
 

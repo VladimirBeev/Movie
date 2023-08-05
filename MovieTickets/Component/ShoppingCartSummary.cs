@@ -4,19 +4,19 @@ using Shopping;
 
 namespace MovieTickets.Web.Component
 {
-	public class ShoppingCartSummary : ViewComponent
-	{
-		private readonly ShoppingCart _shoppingCart;
-		public ShoppingCartSummary(ShoppingCart shoppingCart)
-		{
-			_shoppingCart = shoppingCart;
-		}
+    public class ShoppingCartSummary : ViewComponent
+    {
+        private readonly ShoppingCart shoppingCart;
+        public ShoppingCartSummary(ShoppingCart shoppingCart)
+        {
+            this.shoppingCart = shoppingCart;
+        }
 
-		public IViewComponentResult Invoke()
-		{
-			var items = _shoppingCart.GetShoppingCartItems();
+        public IViewComponentResult Invoke()
+        {
+            var items = shoppingCart.GetShoppingCartItems();
 
-			return View(items.Count);
-		}
-	}
+            return View(items.Count);
+        }
+    }
 }

@@ -58,7 +58,7 @@ namespace MovieTickets.Services.Data
             return null!;
         }
 
-        public async Task<IEnumerable<ActorViewModel>> GetAllActorsAsync()
+        public async Task<ICollection<ActorViewModel>> GetAllActorsAsync()
         {
             return await dbContext.Actors.Select(a => new ActorViewModel()
             {

@@ -39,7 +39,10 @@
 					<input asp-for="Street" class="form-control" readonly />
 				</div>
 				<div class="form-group">
-					<a class="btn btn-outline-success float-end" asp-controller="Cinema" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+					@if (User.Identity?.IsAuthenticated ?? false && User.IsInRole("Admin"))
+					{
+						<a class="btn btn-outline-success float-end" asp-controller="Cinema" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+					}
 					<a class="btn btn-outline-secondary" asp-action="AllCinemas">Show All</a>
 				</div>
 			</div>

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.ViewModels.Cart;
@@ -10,7 +9,6 @@ using System.Security.Claims;
 
 namespace MovieTickets.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class OrderController : Controller
     {
         private readonly ShoppingCart shoppingCart;
@@ -24,7 +22,6 @@ namespace MovieTickets.Web.Controllers
             this.movieService = movieService;
             this.orderService = orderService;
         }
-
 
         public async Task<IActionResult> AllOrders()
         {

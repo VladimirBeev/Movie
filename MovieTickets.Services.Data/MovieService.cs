@@ -48,12 +48,7 @@ namespace MovieTickets.Services.Data
 			await dbContext.SaveChangesAsync();
 		}
 
-		public Task DeleteMovieAsync(int id)
-		{
-			throw new NotImplementedException();
-		}
-
-		public async Task<IEnumerable<AllMoviesViewModel>> GetAllMoviesAsync()
+		public async Task<ICollection<AllMoviesViewModel>> GetAllMoviesAsync()
 		{
 			return await dbContext.Movies
 				.Select(m => new AllMoviesViewModel()
@@ -123,6 +118,21 @@ namespace MovieTickets.Services.Data
 				.ToListAsync();
 
 			return response;
+		}
+
+		public async Task<ICollection<AllMoviesViewModel>> LastThreeMovies()
+		{
+			return await dbContext.Movies
+				.OrderByDescending(m => m.Id)
+				.Select(m => new AllMoviesViewModel
+				{
+					Id = m.Id,
+					Title = m.Title,
+					ImageUrl = m.ImageUrl
+
+				})
+				.Take(3)
+				.ToListAsync();
 		}
 
 		public async Task<NewMovie> UpdateMovieAsync(NewMovie updateMovieViewModel)

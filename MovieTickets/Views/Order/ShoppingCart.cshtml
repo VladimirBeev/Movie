@@ -55,13 +55,25 @@
         </table>
 
         <div class="container-fluid">
+            @if (this.User.Identity.IsAuthenticated)
+            {
                 <a class="btn btn-outline-primary" asp-action="CompleteOrder">
-                Complete order
+                    Complete order
                 </a>
                 <a class="btn btn-outline-success" asp-controller="Movie" asp-action="AllMovies">
                     Add more items
                 </a>
                 <div class="float-end" id="paypal-button-container"></div>
+            }
+            else
+            {
+                <a class="btn btn-outline-success" asp-controller="Movie" asp-action="AllMovies">
+                    Add more items
+                </a>
+                <a class="btn btn-outline-success float-end" asp-controller="Account" asp-action="Login">
+                    Login
+                </a>
+            }
         </div>
     </div>
 </div>

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using MovieTickets.Services.Data;
+using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.ViewModels.Home;
 
 using System.Diagnostics;
@@ -8,14 +10,17 @@ namespace MovieTickets.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
+        private readonly IMovieService movieService;
+        public HomeController(IMovieService movieService)
         {
-
+            this.movieService = movieService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var threeMovies = await movieService.LastThreeMovies();
+
+            return View(threeMovies);
         }
 
 

@@ -42,7 +42,7 @@ namespace MovieTickets.Services.Data
 			}
 		}
 
-		public async Task<IEnumerable<CinemasViewModel>> GetAllCinemasAsync()
+		public async Task<ICollection<CinemasViewModel>> GetAllCinemasAsync()
 		{
 			return await dbContext.Cinemas
 				.Select(c => new CinemasViewModel()

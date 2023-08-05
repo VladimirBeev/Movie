@@ -9,14 +9,14 @@ namespace Shopping
 {
 	public class ShoppingCart
 	{
-		public MovieDbContext _context { get; set; }
+		public MovieDbContext context { get; set; }
 
 		public string ShoppingCartId { get; set; } = null!;
-		public List<ShoppingCartItems> ShoppingCartItems { get; set; } = new List<ShoppingCartItems>();
+		public List<ShoppingCartItems> ShoppingCartItems { get; set; }
 
 		public ShoppingCart(MovieDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public static ShoppingCart GetShoppingCart(IServiceProvider services)
@@ -32,7 +32,7 @@ namespace Shopping
 
 		public void AddItemToCart(Movie movie)
 		{
-			var shoppingCartItem = _context.ShoppingCartItems
+			var shoppingCartItem = context.ShoppingCartItems
 				.FirstOrDefault(n => n.Movie.Id == movie.Id && n.ShoppingCartId == ShoppingCartId);
 
 			if (shoppingCartItem == null)
@@ -44,18 +44,19 @@ namespace Shopping
 					Amount = 1
 				};
 
-				_context.ShoppingCartItems.Add(shoppingCartItem);
+				context.ShoppingCartItems.Add(shoppingCartItem);
 			}
 			else
 			{
 				shoppingCartItem.Amount++;
 			}
-			_context.SaveChanges();
+
+			context.SaveChanges();
 		}
 
 		public void RemoveItemFromCart(Movie movie)
 		{
-			var shoppingCartItem = _context.ShoppingCartItems
+			var shoppingCartItem = context.ShoppingCartItems
 				.FirstOrDefault(n => n.Movie.Id == movie.Id && n.ShoppingCartId == ShoppingCartId);
 
 			if (shoppingCartItem != null)
@@ -66,16 +67,17 @@ namespace Shopping
 				}
 				else
 				{
-					_context.ShoppingCartItems.Remove(shoppingCartItem);
+					context.ShoppingCartItems.Remove(shoppingCartItem);
 				}
 			}
-			_context.SaveChanges();
+
+			context.SaveChanges();
 		}
 
 		public List<ShoppingCartItems> GetShoppingCartItems()
 		{
 			return ShoppingCartItems ?? 
-				(ShoppingCartItems = _context.ShoppingCartItems
+				(ShoppingCartItems = context.ShoppingCartItems
 				.Where(n => n.ShoppingCartId == ShoppingCartId)
 				.Include(n => n.Movie)
 				.ToList());
@@ -83,7 +85,7 @@ namespace Shopping
 
 		public decimal GetShoppingCartTotal()
 		{
-            return  _context.ShoppingCartItems
+            return  context.ShoppingCartItems
 				.Where(n => n.ShoppingCartId == ShoppingCartId)
 				.Select(n => n.Movie.Price * n.Amount)
 				.Sum();
@@ -91,13 +93,13 @@ namespace Shopping
 
 		public async Task ClearShoppingCartAsync()
 		{
-			var items = await _context.ShoppingCartItems
+			var items = await context.ShoppingCartItems
 				.Where(n => n.ShoppingCartId == ShoppingCartId)
 				.ToListAsync();
 
-			_context.ShoppingCartItems.RemoveRange(items);
+			context.ShoppingCartItems.RemoveRange(items);
 
-			await _context.SaveChangesAsync();
+			await context.SaveChangesAsync();
 		}
 	}
 }

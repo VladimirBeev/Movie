@@ -15,7 +15,7 @@ namespace MovieTickets.Services.Data
 			this.dbContext = dbContext;
 		}
 
-		public async Task<List<Order>> GetAllOrdersByUserIdAndRoleAsync(string userId, string userRole)
+		public async Task<ICollection<Order>> GetAllOrdersByUserIdAndRoleAsync(string userId, string userRole)
 		{
 			var orders = await dbContext.Orders
 				.Include(o => o.OrderItems)
@@ -31,7 +31,7 @@ namespace MovieTickets.Services.Data
 			return orders;
 		}
 
-		public async Task StoreOrderAsync(List<ShoppingCartItems> items, string userId, string userEmail)
+		public async Task StoreOrderAsync(ICollection<ShoppingCartItems> items, string userId, string userEmail)
 		{
 			var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
 			if (user == null)

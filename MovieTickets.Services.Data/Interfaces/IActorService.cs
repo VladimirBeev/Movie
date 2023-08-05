@@ -4,11 +4,11 @@ namespace MovieTickets.Services.Data.Interfaces
 {
     public interface IActorService
     {
-        Task<IEnumerable<ActorViewModel>> GetAllActorsAsync();
-
-        Task<ActorViewModel> GetActorByIdAsync(int id);
+        Task<ICollection<ActorViewModel>> GetAllActorsAsync();
 
         Task AddActorAsync(ActorViewModel actor);
+
+        Task<ActorViewModel> GetActorByIdAsync(int id);
 
         Task<ActorViewModel> UpdateActorAsync(ActorViewModel updateActor);
 

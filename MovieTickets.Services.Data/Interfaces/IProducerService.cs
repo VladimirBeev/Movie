@@ -4,11 +4,11 @@ namespace MovieTickets.Services.Data.Interfaces
 {
     public interface IProducerService
     {
-        Task<IEnumerable<ProducersViewModel>> GetAllProducersAsync();
-
-        Task<ProducersViewModel> GetProducerByIdAsync(int id);
+        Task<ICollection<ProducersViewModel>> GetAllProducersAsync();
 
         Task AddProducerAsync(ProducersViewModel producer);
+
+        Task<ProducersViewModel> GetProducerByIdAsync(int id);
 
         Task<ProducersViewModel> UpdateProducerAsync(ProducersViewModel updateProducer);
 

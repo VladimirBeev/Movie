@@ -38,7 +38,7 @@ namespace MovieTickets.Services.Data
             }
         }
 
-        public async Task<IEnumerable<ProducersViewModel>> GetAllProducersAsync()
+        public async Task<ICollection<ProducersViewModel>> GetAllProducersAsync()
         {
             return await dbContext.Producers
                 .Select(p => new ProducersViewModel()
