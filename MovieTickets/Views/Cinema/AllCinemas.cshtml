@@ -31,7 +31,7 @@
 							@Html.DisplayFor(modelItem => item.Description)
 						</td>
 						<td class="align-middle">
-							@if (User.Identity?.IsAuthenticated ?? false && User.IsInRole("Admin"))
+							@if ((User.Identity?.IsAuthenticated ?? false) && User.IsInRole("Admin"))
 							{
 								<a class="btn btn-outline-primary" asp-controller="Cinema" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Edit</a>
 								<a class="btn btn-danger" asp-controller="Cinema" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Delete</a>
@@ -44,8 +44,11 @@
 		</table>
 	</div>
 </div>
-<div style="position: fixed; right: 25px; bottom: 75px;" class="text-white">
-	<a asp-controller="Cinema" asp-action="Create" class="btn btn-success">
-		<i class="bi bi-plus-circle"></i>Add New
-	</a>
-</div>
+@if ((User.Identity?.IsAuthenticated ?? false) && User.IsInRole("Admin"))
+{
+	<div style="position: fixed; right: 25px; bottom: 75px;" class="text-white">
+		<a asp-controller="Actor" asp-action="Create" class="btn btn-success">
+			<i class="bi bi-plus-circle"></i>Add New
+		</a>
+	</div>
+}

@@ -1,4 +1,5 @@
 ﻿using MovieTickets.Data.EntityModels;
+using MovieTickets.Web.ViewModels.Actor;
 using MovieTickets.Web.ViewModels.Cinema;
 using MovieTickets.Web.ViewModels.Producer;
 
@@ -29,17 +30,10 @@ namespace MovieTickets.Web.ViewModels.Movie
 
 		public DateTime? EndDate { get; set; }
 
-		public MovieCategory MovieCategory { get; set; }
+		public string MovieCategory { get; set; }
+		public string CinemaName { get; set; } = null!;
+		public string ProducerName { get; set; } = null!;
 
-
-		public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
-
-		public int CinemaId { get; set; }
-		[ForeignKey(nameof(CinemaId))]
-		public CinemasViewModel Cinema { get; set; } = null!;
-
-		public int ProducerId { get; set; }
-		[ForeignKey(nameof(ProducerId))]
-		public ProducersViewModel Producer { get; set; } = null!;
+		public List<ActorViewModel> actorViewModels = new List<ActorViewModel>();
 	}
 }

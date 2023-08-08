@@ -5,6 +5,7 @@ using MovieTickets.Data;
 using MovieTickets.Data.EntityModels;
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.Infrastructure.Extensions;
+using static MovieTickets.Web.Infrastructure.Extensions.WebApplicationBuilderExtensions;
 
 using Shopping;
 

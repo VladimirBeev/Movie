@@ -6,6 +6,8 @@ using MovieTickets.Data;
 using MovieTickets.Data.EntityModels;
 using MovieTickets.Web.ViewModels.Account;
 
+using static MovieTickets.Common.NotificationsConstant;
+
 namespace MovieTickets.Web.Controllers
 {
     public class AccountController : Controller
@@ -44,7 +46,7 @@ namespace MovieTickets.Web.Controllers
                 return View(loginViewModel);
             }
 
-            var user = await userManager.FindByEmailAsync(loginViewModel.EmailAddress);
+            var user = await userManager.Users.FirstOrDefaultAsync(e => e.Email == loginViewModel.EmailAddress);
 
             if (user != null)
             {
@@ -58,16 +60,18 @@ namespace MovieTickets.Web.Controllers
 
                     if (result.Succeeded)
                     {
+                        TempData[SuccessMessage] = "You are Signin";
+
                         return RedirectToAction("AllMovies", "Movie");
                     }
                 }
 
-                TempData["Error"] = "Wrong credentials. Please, try again!";
+                TempData[ErrorMessage] = "Wrong credentials. Please, try again!";
 
                 return View(loginViewModel);
             }
 
-            TempData["Error"] = "Wrong credentials. Please, try again!";
+            TempData[ErrorMessage] = "Wrong credentials. Please, try again!";
 
             return View(loginViewModel);
         }
@@ -92,7 +96,7 @@ namespace MovieTickets.Web.Controllers
 
             if (user != null)
             {
-                TempData["Error"] = "This email address is already in use";
+                TempData[ErrorMessage] = "This email address is already in use";
 
                 return View(registerViewModel);
             }
@@ -111,6 +115,8 @@ namespace MovieTickets.Web.Controllers
                 await userManager.AddToRoleAsync(newUser, "User");
             }
 
+            TempData[SuccessMessage] = "Register Completed";
+
             return View("RegisterCompleted");
         }
 
@@ -119,11 +125,14 @@ namespace MovieTickets.Web.Controllers
         {
             await signInManager.SignOutAsync();
 
-            return RedirectToAction("Index", "Movies");
+            TempData[InformationsMessage] = "You are logout";
+
+            return RedirectToAction("AllMovies", "Movie");
         }
 
         public IActionResult AccessDenied(string ReturnUrl)
         {
+            TempData[WarningMessage] = "Access Denied";
             return View();
         }
     }

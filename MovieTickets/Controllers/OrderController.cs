@@ -6,17 +6,15 @@ using MovieTickets.Web.ViewModels.Cart;
 
 using Shopping;
 
-using System.Security.Claims;
-
 namespace MovieTickets.Web.Controllers
 {
-    public class OrderController : Controller
+	public class OrderController : Controller
     {
         private readonly ShoppingCart shoppingCart;
         private readonly IMovieService movieService;
         private readonly IOrderService orderService;
 
-        public OrderController(ShoppingCart shoppingCart,
+		public OrderController(ShoppingCart shoppingCart,
             IMovieService movieService, IOrderService orderService)
         {
             this.shoppingCart = shoppingCart;
@@ -80,11 +78,15 @@ namespace MovieTickets.Web.Controllers
         {
             var items = shoppingCart.GetShoppingCartItems();
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
+            //string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
 
-            await orderService.StoreOrderAsync(items, userId, userEmailAddress);
+			string userId = User.Id();
+
+			string userEmailAddress = User.Email();
+
+			await orderService.StoreOrderAsync(items, userId, userEmailAddress);
 
             await shoppingCart.ClearShoppingCartAsync();
 

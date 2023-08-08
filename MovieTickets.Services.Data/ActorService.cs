@@ -44,7 +44,7 @@ namespace MovieTickets.Services.Data
             Actor? actor = await dbContext.Actors.FirstOrDefaultAsync(a => a.Id == id);
             if (actor != null)
             {
-                var actorModel = new ActorViewModel()
+                ActorViewModel actorModel = new ActorViewModel()
                 {
                     Id = actor.Id,
                     Name = actor.Name,

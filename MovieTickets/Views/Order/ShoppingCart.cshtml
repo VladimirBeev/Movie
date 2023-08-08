@@ -55,7 +55,7 @@
         </table>
 
         <div class="container-fluid">
-            @if (this.User.Identity.IsAuthenticated)
+            @if (User.Identity?.IsAuthenticated ?? false)
             {
                 <a class="btn btn-outline-primary" asp-action="CompleteOrder">
                     Complete order

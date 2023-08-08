@@ -3,13 +3,12 @@
 @{
 	ViewData["Title"] = "Actors";
 }
-
-<div class="row">
-	<div class="col-md-8 offset-md-2">
-		<p>
-			<h1 class="text-center">@ViewData["Title"]</h1>
-		</p>
-		<table class="table">
+<div class="container text-start">
+	<p>
+		<h1 class="text-center">@ViewData["Title"]</h1>
+	</p>
+	<div class="row row-cols-auto">
+		<table class="table table-hover">
 			<thead>
 				<tr>
 					<th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
@@ -23,7 +22,7 @@
 				{
 					<tr>
 						<td class="align-middle">
-							<img class="rounded-circle" src="@item.ImageUrl" alt="@item.Name" style="max-width: 150px"?/>
+							<img class="rounded-circle" src="@item.ImageUrl" alt="@item.Name" style="max-width: 150px" ? />
 						</td>
 						<td class="align-middle">
 							@Html.DisplayFor(modelItem => item.Name)
@@ -32,12 +31,12 @@
 							@Html.DisplayFor(modelItem => item.Description)
 						</td>
 						<td class="align-middle">
-							@if(User.Identity?.IsAuthenticated?? false && User.IsInRole("Admin"))
+							@if ((User.Identity?.IsAuthenticated ?? false) && User.IsInRole("Admin"))
 							{
 								<a class="btn btn-outline-primary" asp-controller="Actor" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Edit</a>
 								<a class="btn btn-danger" asp-controller="Actor" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Delete</a>
 							}
-							<a class="btn btn-outline-info"asp-controller="Actor" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i>Details</a>
+							<a class="btn btn-outline-info" asp-controller="Actor" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i>Details</a>
 						</td>
 					</tr>
 				}
@@ -45,7 +44,11 @@
 		</table>
 	</div>
 </div>
-<div style="position: fixed; right: 25px; bottom: 75px;" class="text-white">
-	<a asp-controller="Actor" asp-action="Create" class="btn btn-success">
-		<i class="bi bi-plus-circle"></i>Add New</a>
-</div>
+@if (User.Identity?.IsAuthenticated ?? false && User.IsInRole("Admin"))
+{
+	<div style="position: fixed; right: 25px; bottom: 75px;" class="text-white">
+		<a asp-controller="Actor" asp-action="Create" class="btn btn-success">
+			<i class="bi bi-plus-circle"></i>Add New
+		</a>
+	</div>
+}

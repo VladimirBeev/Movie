@@ -8,10 +8,10 @@ namespace MovieTickets.Web.ViewModels.Account
         [Required]
         [DisplayName("Email address")]
         [EmailAddress]
-        public string EmailAddress { get; set; } = null!;
+        public string EmailAddress { get; set; }
 
         [Required]
         [PasswordPropertyText]
-        public string Password { get; set; } = null!;
+        public string Password { get; set; }
     }
 }
