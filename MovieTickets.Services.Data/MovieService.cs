@@ -10,7 +10,7 @@ using MovieTickets.Web.ViewModels.Producer;
 
 namespace MovieTickets.Services.Data
 {
-	public class MovieService : IMovieService
+    public class MovieService : IMovieService
 	{
 		private readonly MovieDbContext dbContext;
 

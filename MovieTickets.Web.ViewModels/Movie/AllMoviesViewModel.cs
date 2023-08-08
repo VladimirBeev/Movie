@@ -9,7 +9,7 @@
 		public string? ImageUrl { get; set; }
 		public DateTime? StartDate { get; set; }
 		public DateTime? EndDate { get; set; }
-		public string MovieCategory { get; set; } = null!;
+        public string MovieCategory { get; set; } = null!;
 		public string Cinema { get; set; } = null!;
 		public string Producer { get; set; } = null!;
 	}

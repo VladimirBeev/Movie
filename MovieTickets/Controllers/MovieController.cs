@@ -50,7 +50,7 @@ namespace MovieTickets.Web.Controllers
             {
                 var movieDropDownValues = await movieService.GetNewMovieDropDownAsync();
 
-                ViewBag.Cinemas = new SelectList(movieDropDownValues.Cinemas, "Id", "Title");
+                ViewBag.Cinemas = new SelectList(movieDropDownValues.Cinemas, "Id", "Name");
                 ViewBag.Producers = new SelectList(movieDropDownValues.Producers, "Id", "Name");
                 ViewBag.Actors = new SelectList(movieDropDownValues.Actors, "Id", "Name");
 
@@ -92,8 +92,8 @@ namespace MovieTickets.Web.Controllers
             modelToAdd.Title = movieToEdit.Title;
             modelToAdd.Description = movieToEdit.Description;
             modelToAdd.Price = movieToEdit.Price;
-            modelToAdd.StartDate = movieToEdit.StartDate;
-            modelToAdd.EndDate = movieToEdit.EndDate;
+            modelToAdd.StartDate = (DateTime)movieToEdit.StartDate;
+            modelToAdd.EndDate = (DateTime)movieToEdit.EndDate;
             modelToAdd.ImageUrl = movieToEdit.ImageUrl;
             modelToAdd.MovieCategory = movieToEdit.MovieCategory;
             modelToAdd.CinemaId = movieToEdit.CinemaId;

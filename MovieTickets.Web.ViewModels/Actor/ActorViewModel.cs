@@ -14,7 +14,7 @@ namespace MovieTickets.Web.ViewModels.Actor
         [Display(Name = "Full Name")]
         public string Name { get; set; } = null!;
 
-        [MaxLength(ActorDescriptionMaxLength)]
+        [StringLength(ActorDescriptionMaxLength, MinimumLength = ActorDescriptionMinLength)]
         [Display(Name = "Biography")]
         public string? Description { get; set; }
 

@@ -60,7 +60,7 @@ namespace MovieTickets.Web.Controllers
 
                     if (result.Succeeded)
                     {
-                        TempData[SuccessMessage] = "You are Signin";
+                        TempData[InformationsMessage] = "You are Signin";
 
                         return RedirectToAction("AllMovies", "Movie");
                     }
