@@ -36,20 +36,43 @@ namespace MovieTickets.Web.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(ActorViewModel actorModel)
-        {
-            if (!ModelState.IsValid)
+		//[HttpPost]
+		//public async Task<IActionResult> Create(ActorViewModel actorModel)
+		//{
+		//    if (!ModelState.IsValid)
+		//    {
+		//        return View(actorModel);
+		//    }
+
+		//    await actorService.AddActorAsync(actorModel);
+
+		//    return RedirectToAction("AllActors");
+		//}
+
+		[HttpPost]
+		public async Task<IActionResult> Create(ActorViewModel actorModel)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(actorModel);
+			}
+
+            try
             {
+				await actorService.AddActorAsync(actorModel);
+			}
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Error occur while Add an Actor. Please try again.");
+
                 return View(actorModel);
             }
+			
 
-            await actorService.AddActorAsync(actorModel);
+			return RedirectToAction("AllActors");
+		}
 
-            return RedirectToAction("AllActors");
-        }
-
-        [HttpGet]
+		[HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {

@@ -8,6 +8,7 @@ using MovieTickets.Web.Infrastructure.Extensions;
 using static MovieTickets.Web.Infrastructure.Extensions.WebApplicationBuilderExtensions;
 
 using Shopping;
+using MovieTickets.Web.Infrastructure.ModelBinders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,7 +57,12 @@ builder.Services.AddSession(options =>
 });
 
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddMvcOptions(option =>
+    {
+        option.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+    });
+
 
 var app = builder.Build();
 
