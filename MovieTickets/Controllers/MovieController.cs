@@ -92,8 +92,8 @@ namespace MovieTickets.Web.Controllers
             modelToAdd.Title = movieToEdit.Title;
             modelToAdd.Description = movieToEdit.Description;
             modelToAdd.Price = movieToEdit.Price;
-            modelToAdd.StartDate = (DateTime)movieToEdit.StartDate;
-            modelToAdd.EndDate = (DateTime)movieToEdit.EndDate;
+            modelToAdd.StartDate = (DateTime)movieToEdit.StartDate!;
+            modelToAdd.EndDate = (DateTime)movieToEdit.EndDate!;
             modelToAdd.ImageUrl = movieToEdit.ImageUrl;
             modelToAdd.MovieCategory = movieToEdit.MovieCategory;
             modelToAdd.CinemaId = movieToEdit.CinemaId;

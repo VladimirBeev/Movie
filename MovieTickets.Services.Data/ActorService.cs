@@ -34,9 +34,12 @@ namespace MovieTickets.Services.Data
         {
             var actor = await dbContext.Actors.FirstOrDefaultAsync(a => a.Id == id);
 
-            dbContext.Actors.Remove(actor);
+            if (actor != null)
+            {
+				dbContext.Actors.Remove(actor);
 
-            await dbContext.SaveChangesAsync();
+				await dbContext.SaveChangesAsync();
+			}
         }
 
         public async Task<ActorViewModel> GetActorByIdAsync(int id)

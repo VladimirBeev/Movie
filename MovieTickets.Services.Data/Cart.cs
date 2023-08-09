@@ -4,8 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MovieTickets.Data;
 using MovieTickets.Data.EntityModels;
 
-using Shopping;
-
 using System.Text;
 
 namespace MovieTickets.Services.Data

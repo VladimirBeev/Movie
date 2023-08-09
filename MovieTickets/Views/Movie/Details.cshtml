@@ -41,8 +41,8 @@
 							</a>
 						</p>
 						<p class="card-text"><b>Category: </b>@Model.MovieCategory</p>
-						<p class="card-text"><b>Start Date: </b>@Model.StartDate.Value.ToString("d MMM yy")</p>
-						<p class="card-text"><b>End Date: </b>@Model.EndDate.Value.ToString("d MMM yy")</p>
+						<p class="card-text"><b>Start Date: </b>@Model.StartDate!.Value.ToString("d MMM yy")</p>
+						<p class="card-text"><b>End Date: </b>@Model.EndDate!.Value.ToString("d MMM yy")</p>
 						<p class="card-text ">
 							<b>Status: </b>
 							@if (DateTime.Now >= Model.StartDate && DateTime.Now <= Model.EndDate)

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.EntityFrameworkCore;
 
 using MovieTickets.Data.EntityModels;
 
@@ -22,7 +22,8 @@ namespace MovieTickets.Web.ViewModels.Movie
         [StringLength(MovieTitleMaxLength, MinimumLength = MovieTitleMinLength)]
         public string Description { get; set; } = null!;
 
-		[Range(typeof(decimal),MoviePriceMinValue, MoviePriceMaxValue)]
+		//[Range(typeof(decimal),MoviePriceMinValue, MoviePriceMaxValue)]
+  //      [Precision(6,2)]
         public decimal Price { get; set; }
 
         [MaxLength(MovieTitleMaxLength)]
