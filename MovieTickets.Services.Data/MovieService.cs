@@ -125,7 +125,7 @@ namespace MovieTickets.Services.Data
 					Id = c.Id,
 					Name = c.Name,
 					Description = c.Description,
-					LogoUrl = c.LogoUrl,
+					ImageUrl = c.LogoUrl,
 					Country = c.Country,
 					City = c.City,
 					Street = c.Street

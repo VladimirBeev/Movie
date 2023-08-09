@@ -26,7 +26,7 @@ namespace MovieTickets.Services.Data
 			cinema.City = actor.City;
 			cinema.Country = actor.Country;
 			cinema.Street = actor.Street;
-			cinema.LogoUrl = actor.LogoUrl;
+			cinema.LogoUrl = actor.ImageUrl;
 
 			await dbContext.Cinemas.AddAsync(cinema);
 			await dbContext.SaveChangesAsync();
@@ -50,7 +50,7 @@ namespace MovieTickets.Services.Data
 					Id = c.Id,
 					Name = c.Name,
 					Description = c.Description,
-					LogoUrl = c.LogoUrl,
+					ImageUrl = c.LogoUrl,
 					Country = c.Country,
 					City = c.City,
 					Street = c.Street
@@ -68,7 +68,7 @@ namespace MovieTickets.Services.Data
 					Id = cinema.Id,
 					Name = cinema.Name,
 					Description = cinema.Description,
-					LogoUrl = cinema.LogoUrl,
+					ImageUrl = cinema.LogoUrl,
 					Country = cinema.Country,
 					City = cinema.City,
 					Street = cinema.Street
@@ -92,7 +92,7 @@ namespace MovieTickets.Services.Data
 				cinemaToEdit.Description = updateCinema.Description;
 				cinemaToEdit.City = updateCinema.City;
 				cinemaToEdit.Country = updateCinema.Country;
-				cinemaToEdit.LogoUrl = updateCinema.LogoUrl;
+				cinemaToEdit.LogoUrl = updateCinema.ImageUrl;
 			}
 
 			await dbContext.SaveChangesAsync();

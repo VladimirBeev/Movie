@@ -17,7 +17,7 @@ namespace MovieTickets.Web.ViewModels.Cinema
 		public string? Description { get; set; }
 
 		[StringLength(CinemaLogoUrlMaxLength)]
-		public string? LogoUrl { get; set; }
+		public string? ImageUrl { get; set; }
 
 		[StringLength(CinemaCountryMaxLength, MinimumLength = CinemaCountryMinLength)]
 		public string? Country { get; set; }
