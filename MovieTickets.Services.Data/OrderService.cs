@@ -33,7 +33,7 @@ namespace MovieTickets.Services.Data
 
         public async Task StoreOrderAsync(ICollection<ShoppingCartItems> items, string userId, string userEmail)
         {
-            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
+            ApplicationUser? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
 
             var order = new Order();
 

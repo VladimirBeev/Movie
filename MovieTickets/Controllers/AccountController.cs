@@ -89,7 +89,9 @@ namespace MovieTickets.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(registerViewModel);
+				TempData[ErrorMessage] = "Register Error";
+
+				return View(registerViewModel);
             }
 
             var user = await userManager.FindByEmailAsync(registerViewModel.Email);

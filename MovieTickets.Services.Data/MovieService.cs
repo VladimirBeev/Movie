@@ -158,33 +158,33 @@ namespace MovieTickets.Services.Data
 				.Include(am => am.ActorMovies)
 				.ThenInclude(a => a.Actor)
 				.FirstOrDefaultAsync(n => n.Id == id);
-			
 
-			//if(movie != null)
-			//{
-   //             DetailsMovie movieModel = new DetailsMovie();
 
-			//	movieModel.Title = movie.Title;
-			//	movieModel.Description = movie.Description;
-			//	movieModel.EndDate = movie.EndDate;
-			//	movieModel.StartDate = movie.StartDate;
-			//	movieModel.ProducerName = movie.Producer.Name.ToString();
-			//	movieModel.Price = movie.Price;
-			//	movieModel.MovieCategory = movie.MovieCategory.ToString();
-			//	movieModel.CinemaName = movie.Cinema.Name;
-			//	movieModel.ImageUrl = movie.ImageUrl;
-			//	movieModel.actorViewModels = movie.ActorMovies
-			//		.Select(a => new ActorViewModel()
-			//		{
-			//			Name = a.Actor.Name,
-			//			ImageUrl = a.Actor.ImageUrl,
-			//			Description = a.Actor.Description
-			//		}).ToList();
+			if (movie != null)
+			{
+				//DetailsMovie movieModel = new DetailsMovie();
 
-			//	return movieModel;
-			//}
+				//movieModel.Title = movie.Title;
+				//movieModel.Description = movie.Description;
+				//movieModel.EndDate = movie.EndDate;
+				//movieModel.StartDate = movie.StartDate;
+				//movieModel.ProducerName = movie.Producer.Name.ToString();
+				//movieModel.Price = movie.Price;
+				//movieModel.MovieCategory = movie.MovieCategory.ToString();
+				//movieModel.CinemaName = movie.Cinema.Name;
+				//movieModel.ImageUrl = movie.ImageUrl;
+				//movieModel.actorViewModels = movie.ActorMovies
+				//	.Select(a => new ActorViewModel()
+				//	{
+				//		Name = a.Actor.Name,
+				//		ImageUrl = a.Actor.ImageUrl,
+				//		Description = a.Actor.Description
+				//	}).ToList();
 
-			return movie;
+				return movie;
+			}
+
+			return null!; ;
 		}
 
 		public async Task<NewMovieDropDown> GetNewMovieDropDownAsync()

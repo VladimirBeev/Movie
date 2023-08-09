@@ -12,7 +12,7 @@ namespace Shopping
 		public MovieDbContext context { get; set; }
 
 		public string ShoppingCartId { get; set; } = null!;
-		public List<ShoppingCartItems> ShoppingCartItems { get; set; }
+		public List<ShoppingCartItems>? ShoppingCartItems { get; set; }
 
 		public ShoppingCart(MovieDbContext context)
 		{

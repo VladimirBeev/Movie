@@ -12,7 +12,7 @@ namespace MovieTickets.Services.Data
 	{
 		private readonly MovieDbContext context;
 		public string ShoppingCartId { get; set; } = null!;
-		public List<ShoppingCartItems> ShoppingCartItems { get; set; }
+		public List<ShoppingCartItems>? ShoppingCartItems { get; set; }
 
 		public Cart(MovieDbContext context)
 		{

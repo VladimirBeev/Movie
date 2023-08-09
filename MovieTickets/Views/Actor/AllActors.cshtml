@@ -44,7 +44,7 @@
 		</table>
 	</div>
 </div>
-@if (User.Identity?.IsAuthenticated ?? false && User.IsInRole("Admin"))
+@if ((User.Identity?.IsAuthenticated ?? false) && User.IsInRole("Admin"))
 {
 	<div style="position: fixed; right: 25px; bottom: 75px;" class="text-white">
 		<a asp-controller="Actor" asp-action="Create" class="btn btn-success">

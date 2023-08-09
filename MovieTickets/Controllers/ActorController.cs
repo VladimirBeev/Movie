@@ -6,7 +6,7 @@ using MovieTickets.Web.ViewModels.Actor;
 
 namespace MovieTickets.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class ActorController : Controller
     {
         private readonly IActorService actorService;
@@ -89,15 +89,21 @@ namespace MovieTickets.Web.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-
-            var actorEdit = await actorService.GetActorByIdAsync(id);
-
-            if (actorEdit == null)
+            try
             {
-                return View("NotFound");
-            }
+				var actorEdit = await actorService.GetActorByIdAsync(id);
+				if (actorEdit == null)
+				{
+					return View("NotFound");
+				}
 
-            return View(actorEdit);
+				return View(actorEdit);
+			}
+            catch (Exception)
+            {
+
+                return View(nameof(NotFound));
+            }
         }
 
         [HttpPost]
