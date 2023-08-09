@@ -1,9 +1,10 @@
 ﻿using MovieTickets.Data.EntityModels;
+using MovieTickets.Services.Data.Models.Movie;
 using MovieTickets.Web.ViewModels.Movie;
 
 namespace MovieTickets.Services.Data.Interfaces
 {
-    public interface IMovieService
+	public interface IMovieService
     {
         Task<ICollection<AllMoviesViewModel>> GetAllMoviesAsync();
 
@@ -16,5 +17,7 @@ namespace MovieTickets.Services.Data.Interfaces
         Task<NewMovie> UpdateMovieAsync(NewMovie updateMovieViewModel);
 
         Task<ICollection<AllMoviesViewModel>> LastThreeMovies();
+
+        Task<AllMoviesFilteredAndPagedServiceModel> AllAsync(AllMoviesQueryModel allMoviesQueryModel);
     }
 }

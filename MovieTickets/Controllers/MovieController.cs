@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 using MovieTickets.Services.Data.Interfaces;
+using MovieTickets.Services.Data.Models.Movie;
 using MovieTickets.Web.ViewModels.Movie;
 
 namespace MovieTickets.Web.Controllers
@@ -133,21 +134,16 @@ namespace MovieTickets.Web.Controllers
             return RedirectToAction("AllMovies");
         }
 
+        [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Filter(string searchString)
+        public async Task<IActionResult> Filter([FromQuery]AllMoviesQueryModel queryModel)
         {
-            var allMovies = await movieService.GetAllMoviesAsync();
+            AllMoviesFilteredAndPagedServiceModel serviceModel = await movieService.AllAsync(queryModel);
 
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                //var filteredResult = allMovies.Where(n => n.Name.ToLower().Contains(searchString.ToLower()) || n.Description.ToLower().Contains(searchString.ToLower())).ToList();
+            queryModel.AllMoviesViewModels = serviceModel.Movies;
+            queryModel.TotalMovies = serviceModel.TotalMoviesCount;
 
-                var filteredResultNew = allMovies.Where(n => string.Equals(n.Title, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.Description, searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
-
-                return View("AllMovies", filteredResultNew);
-            }
-
-            return View("AllMovies", allMovies);
-        }
+            return View(queryModel);
+		}
     }
 }

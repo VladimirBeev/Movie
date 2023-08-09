@@ -3,9 +3,11 @@
 using MovieTickets.Data;
 using MovieTickets.Data.EntityModels;
 using MovieTickets.Services.Data.Interfaces;
+using MovieTickets.Services.Data.Models.Movie;
 using MovieTickets.Web.ViewModels.Actor;
 using MovieTickets.Web.ViewModels.Cinema;
 using MovieTickets.Web.ViewModels.Movie;
+using MovieTickets.Web.ViewModels.Movie.Enum;
 using MovieTickets.Web.ViewModels.Producer;
 
 namespace MovieTickets.Services.Data
@@ -46,6 +48,87 @@ namespace MovieTickets.Services.Data
 			}
 
 			await dbContext.SaveChangesAsync();
+		}
+
+		public async Task<AllMoviesFilteredAndPagedServiceModel> AllAsync(AllMoviesQueryModel allMoviesQueryModel)
+		{
+			IQueryable<Movie> moviesQuery = dbContext.Movies.AsQueryable();
+
+			if (!string.IsNullOrWhiteSpace(allMoviesQueryModel.SearchString))
+			{
+				string wildCard = $"%{allMoviesQueryModel.SearchString.ToLower()}%";
+
+				moviesQuery = moviesQuery
+					.Where(h => EF.Functions.Like(h.Title, wildCard) ||
+								EF.Functions.Like(h.Description, wildCard));
+			}
+
+			moviesQuery = allMoviesQueryModel.MovieSorting switch
+			{
+				MovieSorting.Newest => moviesQuery
+					.OrderByDescending(h => h.StartDate),
+				MovieSorting.Oldest => moviesQuery
+					.OrderBy(h => h.StartDate),
+				MovieSorting.PriceAscending => moviesQuery
+					.OrderBy(h => h.Price),
+				MovieSorting.PriceDescending => moviesQuery
+					.OrderByDescending(h => h.Price),
+				_ => moviesQuery
+					.OrderBy(h => h.Price)
+			};
+
+			moviesQuery = allMoviesQueryModel.Category switch
+			{
+				MovieCategory.Action => moviesQuery
+					.Where(m => m.MovieCategory == allMoviesQueryModel.Category),
+				MovieCategory.Adventure => moviesQuery
+                    .Where(m => m.MovieCategory == allMoviesQueryModel.Category),
+                MovieCategory.Comedy => moviesQuery
+                    .Where(m => m.MovieCategory == allMoviesQueryModel.Category),
+                MovieCategory.Documentary => moviesQuery
+                    .Where(m => m.MovieCategory == allMoviesQueryModel.Category),
+                MovieCategory.Drama => moviesQuery
+                    .Where(m => m.MovieCategory == allMoviesQueryModel.Category),
+                MovieCategory.Fantasy => moviesQuery
+                    .Where(m => m.MovieCategory == allMoviesQueryModel.Category),
+                MovieCategory.Horror => moviesQuery
+                    .Where(m => m.MovieCategory == allMoviesQueryModel.Category),
+                MovieCategory.Romance => moviesQuery
+                    .Where(m => m.MovieCategory == allMoviesQueryModel.Category),
+                MovieCategory.Thriller => moviesQuery
+                    .Where(m => m.MovieCategory == allMoviesQueryModel.Category),
+                MovieCategory.Western => moviesQuery
+                    .Where(m => m.MovieCategory == allMoviesQueryModel.Category),
+                _ => moviesQuery
+					.OrderBy(m => m.MovieCategory)
+			};
+
+			ICollection<AllMoviesViewModel> allMovies = await moviesQuery
+			   .Skip((allMoviesQueryModel.CurrentPage - 1) * allMoviesQueryModel.MoviesPerPage)
+			   .Take(allMoviesQueryModel.MoviesPerPage)
+			   .Select(h => new AllMoviesViewModel
+			   {
+				   Id = h.Id,
+				   ImageUrl = h.ImageUrl,
+				   Title = h.Title,
+				   Description = h.Description,
+				   StartDate = h.StartDate,
+				   EndDate = h.EndDate,
+				   Cinema = h.Cinema.Name,
+				   Producer = h.Producer.Name,
+				   Price = h.Price,
+				   MovieCategory = h.MovieCategory.ToString(),
+			   })
+			   .ToListAsync();
+
+			int totalHouses = moviesQuery.Count();
+
+			return new AllMoviesFilteredAndPagedServiceModel()
+			{
+				TotalMoviesCount = totalHouses,
+				Movies = allMovies
+			};
+
 		}
 
 		public async Task<ICollection<AllMoviesViewModel>> GetAllMoviesAsync()

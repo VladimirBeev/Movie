@@ -10,6 +10,7 @@
     <ProjectReference Include="..\MovieTickets.Common\MovieTickets.Common.csproj" />
     <ProjectReference Include="..\MovieTickets.Data.EntityModels\MovieTickets.Data.EntityModels.csproj" />
     <ProjectReference Include="..\MovieTickets.Data\MovieTickets.Data.csproj" />
+    <ProjectReference Include="..\MovieTickets.Services.Data.Models\MovieTickets.Services.Data.Models.csproj" />
     <ProjectReference Include="..\MovieTickets.Web.ViewModels\MovieTickets.Web.ViewModels.csproj" />
   </ItemGroup>
 
