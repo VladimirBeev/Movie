@@ -10,6 +10,8 @@ using MovieTickets.Web.ViewModels.Movie;
 using MovieTickets.Web.ViewModels.Movie.Enum;
 using MovieTickets.Web.ViewModels.Producer;
 
+using System.Net;
+
 namespace MovieTickets.Services.Data
 {
     public class MovieService : IMovieService
@@ -25,12 +27,12 @@ namespace MovieTickets.Services.Data
 		{
 			Movie movie = new Movie();
 
-			movie.Title = moviesViewModel.Title;
-			movie.Description = moviesViewModel.Description;
+			movie.Title = WebUtility.HtmlEncode(moviesViewModel.Title);
+			movie.Description = WebUtility.HtmlEncode(moviesViewModel.Description);
 			movie.Price = moviesViewModel.Price;
 			movie.StartDate = moviesViewModel.StartDate;
 			movie.EndDate = moviesViewModel.EndDate;
-			movie.ImageUrl = moviesViewModel.ImageUrl;
+			movie.ImageUrl = WebUtility.UrlEncode(moviesViewModel.ImageUrl);
 			movie.CinemaId = moviesViewModel.CinemaId;
 			movie.MovieCategory = moviesViewModel.MovieCategory;
 			movie.ProducerId = moviesViewModel.ProducerId;
@@ -137,20 +139,20 @@ namespace MovieTickets.Services.Data
 				.Select(m => new AllMoviesViewModel()
 				{
 					Id = m.Id,
-					Title = m.Title,
-					Description = m.Description,
+					Title = WebUtility.HtmlDecode(m.Title),
+					Description = WebUtility.HtmlDecode(m.Description),
 					EndDate = m.EndDate,
 					StartDate = m.StartDate,
-					Cinema = m.Cinema.Name,
-					ImageUrl = m.ImageUrl,
+					Cinema = WebUtility.HtmlDecode(m.Cinema.Name),
+					ImageUrl = WebUtility.UrlDecode(m.ImageUrl),
 					Price = m.Price,
-					MovieCategory = m.MovieCategory.ToString(),
-					Producer = m.Producer.Name
+					MovieCategory = WebUtility.HtmlDecode(m.MovieCategory.ToString()),
+					Producer = WebUtility.HtmlDecode(m.Producer.Name)
 
 				}).ToListAsync();
 		}
 
-		public async Task<Movie> GetMovieByIdAsync(int id)
+		public async Task<NewMovie> GetNewMovieByIdAsync(int id)
 		{
 			Movie? movie = await dbContext.Movies
 				.Include(c => c.Cinema)
@@ -159,35 +161,46 @@ namespace MovieTickets.Services.Data
 				.ThenInclude(a => a.Actor)
 				.FirstOrDefaultAsync(n => n.Id == id);
 
+            if (movie == null)
+            {
+				return null!;
+            }
 
-			if (movie != null)
-			{
-				//DetailsMovie movieModel = new DetailsMovie();
+            var modelToAdd = new NewMovie();
 
-				//movieModel.Title = movie.Title;
-				//movieModel.Description = movie.Description;
-				//movieModel.EndDate = movie.EndDate;
-				//movieModel.StartDate = movie.StartDate;
-				//movieModel.ProducerName = movie.Producer.Name.ToString();
-				//movieModel.Price = movie.Price;
-				//movieModel.MovieCategory = movie.MovieCategory.ToString();
-				//movieModel.CinemaName = movie.Cinema.Name;
-				//movieModel.ImageUrl = movie.ImageUrl;
-				//movieModel.actorViewModels = movie.ActorMovies
-				//	.Select(a => new ActorViewModel()
-				//	{
-				//		Name = a.Actor.Name,
-				//		ImageUrl = a.Actor.ImageUrl,
-				//		Description = a.Actor.Description
-				//	}).ToList();
+            modelToAdd.Id = movie.Id;
+            modelToAdd.Title = WebUtility.HtmlDecode(movie.Title);
+            modelToAdd.Description = WebUtility.HtmlDecode(movie.Description);
+            modelToAdd.Price = movie.Price;
+            modelToAdd.StartDate = (DateTime)movie.StartDate!;
+            modelToAdd.EndDate = (DateTime)movie.EndDate!;
+            modelToAdd.ImageUrl = WebUtility.UrlDecode(movie.ImageUrl);
+            modelToAdd.MovieCategory = movie.MovieCategory;
+            modelToAdd.CinemaId = movie.CinemaId;
+            modelToAdd.ProducerId = movie.ProducerId;
+            modelToAdd.ActorIds = movie.ActorMovies.Select(n => n.ActorId).ToList();
 
-				return movie;
-			}
 
-			return null!; ;
+			return modelToAdd;
 		}
 
-		public async Task<NewMovieDropDown> GetNewMovieDropDownAsync()
+        public async Task<Movie> GetMovieByIdAsync(int id)
+        {
+            Movie? movie = await dbContext.Movies
+                .Include(c => c.Cinema)
+                .Include(p => p.Producer)
+                .Include(am => am.ActorMovies)
+                .ThenInclude(a => a.Actor)
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            if (movie == null)
+            {
+                return null!;
+            }
+            return movie;
+        }
+
+        public async Task<NewMovieDropDown> GetNewMovieDropDownAsync()
 		{
 			var response = new NewMovieDropDown();
 
@@ -249,10 +262,10 @@ namespace MovieTickets.Services.Data
 
 			if (movieToUpdate != null)
 			{
-				movieToUpdate.Title = updateMovieViewModel.Title;
-				movieToUpdate.Description = updateMovieViewModel.Description;
+				movieToUpdate.Title = WebUtility.HtmlEncode(updateMovieViewModel.Title);
+				movieToUpdate.Description = WebUtility.HtmlEncode(updateMovieViewModel.Description);
 				movieToUpdate.Price = updateMovieViewModel.Price;
-				movieToUpdate.ImageUrl = updateMovieViewModel.ImageUrl;
+				movieToUpdate.ImageUrl = WebUtility.UrlEncode(updateMovieViewModel.ImageUrl);
 				movieToUpdate.CinemaId = updateMovieViewModel.CinemaId;
 				movieToUpdate.StartDate = updateMovieViewModel.StartDate;
 				movieToUpdate.EndDate = updateMovieViewModel.EndDate;

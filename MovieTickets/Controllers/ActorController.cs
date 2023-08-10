@@ -103,7 +103,6 @@ namespace MovieTickets.Web.Controllers
                 }
                 catch (Exception)
                 {
-
                     return View(nameof(NotFound));
                 }
             }

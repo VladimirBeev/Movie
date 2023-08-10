@@ -7,6 +7,8 @@ using MovieTickets.Services.Data.Models.Movie;
 using MovieTickets.Web.Infrastructure.Extensions;
 using MovieTickets.Web.ViewModels.Movie;
 
+using System.Net;
+
 using static MovieTickets.Common.NotificationsConstant;
 
 namespace MovieTickets.Web.Controllers
@@ -132,26 +134,26 @@ namespace MovieTickets.Web.Controllers
             {
                 try
                 {
-                    var movieToEdit = await movieService.GetMovieByIdAsync(id);
+                    var movieToEdit = await movieService.GetNewMovieByIdAsync(id);
 
                     if (movieToEdit == null)
                     {
                         return View("Not Found");
                     }
 
-                    var modelToAdd = new NewMovie();
+                    //var modelToAdd = new NewMovie();
 
-                    modelToAdd.Id = movieToEdit.Id;
-                    modelToAdd.Title = movieToEdit.Title;
-                    modelToAdd.Description = movieToEdit.Description;
-                    modelToAdd.Price = movieToEdit.Price;
-                    modelToAdd.StartDate = (DateTime)movieToEdit.StartDate!;
-                    modelToAdd.EndDate = (DateTime)movieToEdit.EndDate!;
-                    modelToAdd.ImageUrl = movieToEdit.ImageUrl;
-                    modelToAdd.MovieCategory = movieToEdit.MovieCategory;
-                    modelToAdd.CinemaId = movieToEdit.CinemaId;
-                    modelToAdd.ProducerId = movieToEdit.ProducerId;
-                    modelToAdd.ActorIds = movieToEdit.ActorMovies.Select(n => n.ActorId).ToList();
+                    //modelToAdd.Id = movieToEdit.Id;
+                    //modelToAdd.Title = WebUtility.HtmlDecode(movieToEdit.Title);
+                    //modelToAdd.Description = WebUtility.HtmlDecode(movieToEdit.Description);
+                    //modelToAdd.Price = movieToEdit.Price;
+                    //modelToAdd.StartDate = (DateTime)movieToEdit.StartDate!;
+                    //modelToAdd.EndDate = (DateTime)movieToEdit.EndDate!;
+                    //modelToAdd.ImageUrl = WebUtility.UrlDecode(movieToEdit.ImageUrl);
+                    //modelToAdd.MovieCategory = movieToEdit.MovieCategory;
+                    //modelToAdd.CinemaId = movieToEdit.CinemaId;
+                    //modelToAdd.ProducerId = movieToEdit.ProducerId;
+                    //modelToAdd.ActorIds = movieToEdit.ActorMovies.Select(n => n.ActorId).ToList();
 
                     var movieDropDownValues = await movieService.GetNewMovieDropDownAsync();
 
@@ -159,7 +161,7 @@ namespace MovieTickets.Web.Controllers
                     ViewBag.Producers = new SelectList(movieDropDownValues.Producers, "Id", "Name");
                     ViewBag.Actors = new SelectList(movieDropDownValues.Actors, "Id", "Name");
 
-                    return View(modelToAdd);
+                    return View(movieToEdit);
                 }
                 catch (Exception)
                 {

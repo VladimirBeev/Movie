@@ -34,8 +34,8 @@ namespace MovieTickets.Web.Controllers
             catch (Exception)
             {
                 TempData[ErrorMessage] = "Get Users action make an Error";
+
                 return RedirectToAction("Index","Home");
-                
             }
            
         }

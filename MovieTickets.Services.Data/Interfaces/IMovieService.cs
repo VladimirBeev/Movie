@@ -10,8 +10,9 @@ namespace MovieTickets.Services.Data.Interfaces
 
         Task AddMovieAsync(NewMovie moviesViewModel);
 
-        Task<Movie> GetMovieByIdAsync(int id);
+        Task<NewMovie> GetNewMovieByIdAsync(int id);
 
+        Task<Movie> GetMovieByIdAsync(int id);
         Task<NewMovieDropDown> GetNewMovieDropDownAsync();
 
         Task<NewMovie> UpdateMovieAsync(NewMovie updateMovieViewModel);

@@ -5,6 +5,8 @@ using MovieTickets.Data.EntityModels;
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.ViewModels.Cinema;
 
+using System.Net;
+
 namespace MovieTickets.Services.Data
 {
     public class CinemaService : ICinemaService
@@ -21,12 +23,12 @@ namespace MovieTickets.Services.Data
 			Cinema cinema = new Cinema();
 
 			cinema.Id = actor.Id;
-			cinema.Name = actor.Name;
-			cinema.Description = actor.Description;
-			cinema.City = actor.City;
-			cinema.Country = actor.Country;
-			cinema.Street = actor.Street;
-			cinema.LogoUrl = actor.ImageUrl;
+			cinema.Name = WebUtility.HtmlEncode(actor.Name);
+			cinema.Description = WebUtility.HtmlEncode(actor.Description);
+			cinema.City = WebUtility.HtmlEncode(actor.City);
+			cinema.Country = WebUtility.HtmlEncode(actor.Country);
+			cinema.Street = WebUtility.HtmlEncode(actor.Street);
+			cinema.LogoUrl = WebUtility.UrlEncode(actor.ImageUrl);
 
 			await dbContext.Cinemas.AddAsync(cinema);
 			await dbContext.SaveChangesAsync();
@@ -48,12 +50,12 @@ namespace MovieTickets.Services.Data
 				.Select(c => new CinemasViewModel()
 				{
 					Id = c.Id,
-					Name = c.Name,
-					Description = c.Description,
-					ImageUrl = c.LogoUrl,
-					Country = c.Country,
-					City = c.City,
-					Street = c.Street
+					Name = WebUtility.HtmlDecode(c.Name),
+					Description = WebUtility.HtmlDecode(c.Description),
+					ImageUrl = WebUtility.UrlDecode(c.LogoUrl),
+					Country = WebUtility.HtmlDecode(c.Country),
+					City = WebUtility.HtmlDecode(c.City),
+					Street = WebUtility.HtmlDecode(c.Street)
 
 				}).ToListAsync();
 		}
@@ -66,12 +68,12 @@ namespace MovieTickets.Services.Data
 				var cinemaModel = new CinemasViewModel()
 				{
 					Id = cinema.Id,
-					Name = cinema.Name,
-					Description = cinema.Description,
-					ImageUrl = cinema.LogoUrl,
-					Country = cinema.Country,
-					City = cinema.City,
-					Street = cinema.Street
+					Name = WebUtility.HtmlDecode(cinema.Name),
+					Description = WebUtility.HtmlDecode(cinema.Description),
+					ImageUrl = WebUtility.UrlDecode(cinema.LogoUrl),
+					Country = WebUtility.HtmlDecode(cinema.Country),
+					City = WebUtility.HtmlDecode(cinema.City),
+					Street = WebUtility.HtmlDecode(cinema.Street)
 				};
 
 				return cinemaModel;
@@ -87,12 +89,12 @@ namespace MovieTickets.Services.Data
 			if (cinemaToEdit != null)
 			{
 				cinemaToEdit.Id = updateCinema.Id;
-				cinemaToEdit.Name = updateCinema.Name;
-				cinemaToEdit.Street = updateCinema.Street;
-				cinemaToEdit.Description = updateCinema.Description;
-				cinemaToEdit.City = updateCinema.City;
-				cinemaToEdit.Country = updateCinema.Country;
-				cinemaToEdit.LogoUrl = updateCinema.ImageUrl;
+				cinemaToEdit.Name = WebUtility.HtmlEncode(updateCinema.Name);
+				cinemaToEdit.Street = WebUtility.HtmlEncode(updateCinema.Street);
+				cinemaToEdit.Description = WebUtility.HtmlEncode(updateCinema.Description);
+				cinemaToEdit.City = WebUtility.HtmlEncode(updateCinema.City);
+				cinemaToEdit.Country = WebUtility.HtmlEncode(updateCinema.Country);
+				cinemaToEdit.LogoUrl = WebUtility.UrlEncode(updateCinema.ImageUrl);
 			}
 
 			await dbContext.SaveChangesAsync();

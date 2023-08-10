@@ -5,6 +5,8 @@ using MovieTickets.Data.EntityModels;
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.ViewModels.Producer;
 
+using System.Net;
+
 namespace MovieTickets.Services.Data
 {
     public class ProducerService : IProducerService
@@ -20,9 +22,9 @@ namespace MovieTickets.Services.Data
         {
             Producer producer = new Producer();
             producer.Id = producerModel.Id;
-            producer.Name = producerModel.Name;
-            producer.Description = producerModel.Description;
-            producer.ImageUrl = producerModel.ImageUrl;
+            producer.Name = WebUtility.HtmlEncode(producerModel.Name);
+            producer.Description = WebUtility.HtmlEncode(producerModel.Description);
+            producer.ImageUrl = WebUtility.UrlEncode(producerModel.ImageUrl);
 
             await dbContext.Producers.AddAsync(producer);
             await dbContext.SaveChangesAsync();
@@ -44,9 +46,9 @@ namespace MovieTickets.Services.Data
                 .Select(p => new ProducersViewModel()
                 {
                     Id = p.Id,
-                    Name = p.Name,
-                    Description = p.Description,
-                    ImageUrl = p.ImageUrl,
+                    Name = WebUtility.HtmlDecode(p.Name),
+                    Description = WebUtility.HtmlDecode(p.Description),
+                    ImageUrl = WebUtility.UrlDecode(p.ImageUrl),
 
                 }).ToListAsync();
         }
@@ -60,9 +62,9 @@ namespace MovieTickets.Services.Data
                 var producerModel = new ProducersViewModel()
                 {
                     Id = producer.Id,
-                    Name = producer.Name,
-                    Description = producer.Description,
-                    ImageUrl = producer.ImageUrl
+                    Name = WebUtility.HtmlDecode(producer.Name),
+                    Description = WebUtility.HtmlDecode(producer.Description),
+                    ImageUrl = WebUtility.HtmlDecode(producer.ImageUrl)
                 };
 
                 return producerModel;
@@ -78,9 +80,9 @@ namespace MovieTickets.Services.Data
             if (producer != null)
             {
                 producer.Id = updateProducer.Id;
-                producer.Name = updateProducer.Name;
-                producer.Description = updateProducer.Description;
-                producer.ImageUrl = updateProducer.ImageUrl;
+                producer.Name = WebUtility.HtmlEncode(updateProducer.Name);
+                producer.Description = WebUtility.HtmlEncode(updateProducer.Description);
+                producer.ImageUrl = WebUtility.HtmlEncode(updateProducer.ImageUrl);
             }
 
             await dbContext.SaveChangesAsync();

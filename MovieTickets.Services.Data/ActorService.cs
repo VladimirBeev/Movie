@@ -5,6 +5,8 @@ using MovieTickets.Data.EntityModels;
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.ViewModels.Actor;
 
+using System.Net;
+
 namespace MovieTickets.Services.Data
 {
     public class ActorService : IActorService
@@ -16,14 +18,23 @@ namespace MovieTickets.Services.Data
             this.dbContext = dbContext;
         }
 
-        public async Task AddActorAsync(ActorViewModel actor)
+        public async Task AddActorAsync(ActorViewModel actorModel)
         {
+            string actorName = WebUtility.HtmlEncode(actorModel.Name);
+            actorModel.Name = actorName;
+
+            string? actorDescription = WebUtility.HtmlEncode(actorModel.Description);
+            actorModel.Description = actorDescription;
+
+            string? actorImageUrl = WebUtility.UrlEncode(actorModel.ImageUrl);
+            actorModel.ImageUrl = actorImageUrl;
+
             Actor newActor = new Actor();
 
-            newActor.Id = actor.Id;
-            newActor.Name = actor.Name;
-            newActor.Description = actor.Description;
-            newActor.ImageUrl = actor.ImageUrl;
+            newActor.Id = actorModel.Id;
+            newActor.Name = actorModel.Name;
+            newActor.Description = actorModel.Description;
+            newActor.ImageUrl = actorModel.ImageUrl;
 
             await dbContext.Actors.AddAsync(newActor);
 
@@ -36,10 +47,10 @@ namespace MovieTickets.Services.Data
 
             if (actor != null)
             {
-				dbContext.Actors.Remove(actor);
+                dbContext.Actors.Remove(actor);
 
-				await dbContext.SaveChangesAsync();
-			}
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task<ActorViewModel> GetActorByIdAsync(int id)
@@ -50,9 +61,9 @@ namespace MovieTickets.Services.Data
                 ActorViewModel actorModel = new ActorViewModel()
                 {
                     Id = actor.Id,
-                    Name = actor.Name,
-                    Description = actor.Description,
-                    ImageUrl = actor.ImageUrl,
+                    Name = WebUtility.HtmlDecode(actor.Name),
+                    Description = WebUtility.HtmlDecode(actor.Description),
+                    ImageUrl = WebUtility.UrlDecode(actor.ImageUrl),
                 };
 
                 return actorModel;
@@ -66,9 +77,9 @@ namespace MovieTickets.Services.Data
             return await dbContext.Actors.Select(a => new ActorViewModel()
             {
                 Id = a.Id,
-                Name = a.Name,
-                Description = a.Description,
-                ImageUrl = a.ImageUrl,
+                Name = WebUtility.HtmlDecode(a.Name),
+                Description = WebUtility.HtmlDecode(a.Description),
+                ImageUrl = WebUtility.UrlDecode(a.ImageUrl),
 
             }).ToListAsync();
         }
@@ -83,9 +94,9 @@ namespace MovieTickets.Services.Data
             }
 
             actorToEdit.Id = model.Id;
-            actorToEdit.Name = model.Name;
-            actorToEdit.Description = model.Description;
-            actorToEdit.ImageUrl = model.ImageUrl;
+            actorToEdit.Name = WebUtility.HtmlEncode(model.Name);
+            actorToEdit.Description = WebUtility.HtmlEncode(model.Description);
+            actorToEdit.ImageUrl = WebUtility.UrlEncode(model.ImageUrl);
 
             await dbContext.SaveChangesAsync();
 
