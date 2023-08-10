@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 using MovieTickets.Services.Data.Interfaces;
+using MovieTickets.Web.Infrastructure.Extensions;
 using MovieTickets.Web.ViewModels.Producer;
+
+using static MovieTickets.Common.NotificationsConstant;
 
 namespace MovieTickets.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class ProducerController : Controller
     {
         private readonly IProducerService producerService;
@@ -20,20 +24,35 @@ namespace MovieTickets.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AllProducers()
         {
-            var allProducers = await producerService.GetAllProducersAsync();
-
-            if (allProducers == null)
+            try
             {
-                return View("NotFound");
+                var allProducers = await producerService.GetAllProducersAsync();
+
+                if (allProducers != null)
+                {
+                    return View(allProducers);
+                }
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "Error occurred on Producers, Please try again";
+
+                return RedirectToAction("Index","Home");
             }
 
-            return View(allProducers);
+            return View("NotFound");
+
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            if (User.Role() == "Admin")
+            {
+                return View();
+            }
+
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         [HttpPost]
@@ -44,7 +63,18 @@ namespace MovieTickets.Web.Controllers
                 return View();
             }
 
-            await producerService.AddProducerAsync(producerModel);
+            try
+            {
+                await producerService.AddProducerAsync(producerModel);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Error occur while Create a Producer. Please try again.");
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            TempData[SuccessMessage] = "Create Producer Complete";
 
             return RedirectToAction("AllProducers");
         }
@@ -53,27 +83,50 @@ namespace MovieTickets.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var producerDetails = await producerService.GetProducerByIdAsync(id);
-
-            if (producerDetails == null)
+            try
             {
-                return View("NotFound");
-            }
+                var producerDetails = await producerService.GetProducerByIdAsync(id);
 
-            return View(producerDetails);
+                if (producerDetails == null)
+                {
+                    return View("NotFound");
+                }
+
+                return View(producerDetails);
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "Error occurred on Producers Details, Please try again";
+
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var producerEdit = await producerService.GetProducerByIdAsync(id);
-
-            if (producerEdit == null)
+            if (User.Role() == "Admin")
             {
-                return View("NotFound");
+                try
+                {
+                    var producerEdit = await producerService.GetProducerByIdAsync(id);
+
+                    if (producerEdit == null)
+                    {
+                        return View("NotFound");
+                    }
+
+                    return View(producerEdit);
+                }
+                catch (Exception)
+                {
+                    TempData[ErrorMessage] = "Error occurred on Producers Details, Please try again";
+
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
-            return View(producerEdit);
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         [HttpPost]
@@ -83,7 +136,19 @@ namespace MovieTickets.Web.Controllers
             {
                 return View(producerModel.Id);
             }
-            await producerService.UpdateProducerAsync(producerModel);
+
+            try
+            {
+                await producerService.UpdateProducerAsync(producerModel);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Error occur while Edit a Producer. Please try again.");
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            TempData[SuccessMessage] = "Successfully Edit an Producer";
 
             return RedirectToAction("AllProducers");
         }
@@ -91,9 +156,25 @@ namespace MovieTickets.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await producerService.DeleteProducerAsync(id);
+            if (User.Role() == "Admin")
+            {
+                try
+                {
+                    await producerService.DeleteProducerAsync(id);
+                }
+                catch (Exception)
+                {
+                    TempData[ErrorMessage] = "Error occurred on Producers Details, Please try again";
 
-            return RedirectToAction("AllProducers");
+                    return RedirectToAction("Index", "Home");
+                }
+
+                TempData[SuccessMessage] = "Successfully Delete an Producer";
+
+                return RedirectToAction("AllProducers");
+            }
+
+            return RedirectToAction("AccessDenied", "Account");
         }
     }
 }

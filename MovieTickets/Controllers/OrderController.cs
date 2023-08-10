@@ -24,9 +24,6 @@ namespace MovieTickets.Web.Controllers
 
         public async Task<IActionResult> AllOrders()
         {
-            //string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            //string userRole = User.FindFirstValue(ClaimTypes.Role);
 
             string userId = User.Id();
 

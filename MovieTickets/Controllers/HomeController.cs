@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using MovieTickets.Services.Data;
 using MovieTickets.Services.Data.Interfaces;
@@ -8,6 +9,7 @@ using System.Diagnostics;
 
 namespace MovieTickets.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IMovieService movieService;
@@ -16,6 +18,8 @@ namespace MovieTickets.Controllers
             this.movieService = movieService;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var threeMovies = await movieService.LastThreeMovies();
@@ -30,6 +34,10 @@ namespace MovieTickets.Controllers
             if (statusCode == 400 || statusCode == 404)
             {
                 return View("Error404");
+            }
+            if (statusCode == 401)
+            {
+                return View("Error401");
             }
             return View();
         }

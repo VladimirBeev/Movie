@@ -7,15 +7,17 @@ using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.Infrastructure.Extensions;
 using MovieTickets.Web.ViewModels.Actor;
 
+using static MovieTickets.Common.NotificationsConstant;
+
 namespace MovieTickets.Web.Controllers
 {
     [Authorize]
     public class ActorController : Controller
     {
         private readonly IActorService actorService;
-		private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-		public ActorController(IActorService actorService, UserManager<ApplicationUser> userManager)
+        public ActorController(IActorService actorService, UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
             this.actorService = actorService;
@@ -40,49 +42,37 @@ namespace MovieTickets.Web.Controllers
         {
             if (User.Role() == "Admin")
             {
-				return View();
-			}
+                return View();
+            }
 
-            return RedirectToAction("AccessDenied","Account");
+            return RedirectToAction("AccessDenied", "Account");
         }
 
-		//[HttpPost]
-		//public async Task<IActionResult> Create(ActorViewModel actorModel)
-		//{
-		//    if (!ModelState.IsValid)
-		//    {
-		//        return View(actorModel);
-		//    }
-
-		//    await actorService.AddActorAsync(actorModel);
-
-		//    return RedirectToAction("AllActors");
-		//}
-
-		[HttpPost]
-		public async Task<IActionResult> Create(ActorViewModel actorModel)
-		{
-			if (!ModelState.IsValid)
-			{
-				return View(actorModel);
-			}
+        [HttpPost]
+        public async Task<IActionResult> Create(ActorViewModel actorModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(actorModel);
+            }
 
             try
             {
-				await actorService.AddActorAsync(actorModel);
-			}
+                await actorService.AddActorAsync(actorModel);
+            }
             catch (Exception)
             {
                 ModelState.AddModelError(string.Empty, "Error occur while Add an Actor. Please try again.");
 
                 return View(actorModel);
             }
-			
 
-			return RedirectToAction("AllActors");
-		}
+            TempData[SuccessMessage] = "You Create an Actor";
 
-		[HttpGet]
+            return RedirectToAction("AllActors");
+        }
+
+        [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
@@ -99,27 +89,26 @@ namespace MovieTickets.Web.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            string userRole = User.Role();
-            if (userRole == "Admin")
+            if (User.Role() == "Admin")
             {
-				try
-				{
-					var actorEdit = await actorService.GetActorByIdAsync(id);
-					if (actorEdit == null)
-					{
-						return View("NotFound");
-					}
+                try
+                {
+                    var actorEdit = await actorService.GetActorByIdAsync(id);
+                    if (actorEdit == null)
+                    {
+                        return View("NotFound");
+                    }
 
-					return View(actorEdit);
-				}
-				catch (Exception)
-				{
+                    return View(actorEdit);
+                }
+                catch (Exception)
+                {
 
-					return View(nameof(NotFound));
-				}
-			}
+                    return View(nameof(NotFound));
+                }
+            }
 
-            return RedirectToAction("AccessDenied","Account");
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         [HttpPost]
@@ -129,7 +118,19 @@ namespace MovieTickets.Web.Controllers
             {
                 return View(actorModel.Id);
             }
-            await actorService.UpdateActorAsync(actorModel);
+
+            try
+            {
+                await actorService.UpdateActorAsync(actorModel);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Error occur while Edit an Actor. Please try again.");
+
+                return View(actorModel.Id);
+            }
+
+            TempData[SuccessMessage] = "Successfully Edit an Actor";
 
             return RedirectToAction("AllActors");
         }
@@ -137,9 +138,26 @@ namespace MovieTickets.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await actorService.DeleteActorAsync(id);
+            if (User.Role() == "Admin")
+            {
+                try
+                {
+                    await actorService.DeleteActorAsync(id);
+                }
+                catch (Exception)
+                {
+                    TempData[ErrorMessage] = "Error on Delete Actor, Please try again";
 
-            return RedirectToAction("AllActors");
+                    return RedirectToAction("AllActors");
+                }
+
+
+                TempData[SuccessMessage] = "You Delete Complete";
+
+                return RedirectToAction("AllActors");
+            }
+
+            return RedirectToAction("AccessDenied", "Account");
         }
     }
 }

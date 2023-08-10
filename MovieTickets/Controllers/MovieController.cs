@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Services.Data.Models.Movie;
+using MovieTickets.Web.Infrastructure.Extensions;
 using MovieTickets.Web.ViewModels.Movie;
+
+using static MovieTickets.Common.NotificationsConstant;
 
 namespace MovieTickets.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class MovieController : Controller
     {
         private readonly IMovieService movieService;
@@ -22,26 +25,49 @@ namespace MovieTickets.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AllMovies()
         {
-            var allMovies = await movieService.GetAllMoviesAsync();
-
-            if (allMovies == null)
+            try
             {
+                var allMovies = await movieService.GetAllMoviesAsync();
+
+                if (allMovies != null)
+                {
+                    return View(allMovies);
+                }
+
                 return View("NotFound");
             }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "Error on Movies, Please try again";
 
-            return View(allMovies);
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var movieDropDownValues = await movieService.GetNewMovieDropDownAsync();
+            if (User.Role() == "Admin")
+            {
+                try
+                {
+                    var movieDropDownValues = await movieService.GetNewMovieDropDownAsync();
 
-            ViewBag.Cinemas = new SelectList(movieDropDownValues.Cinemas, "Id", "Name");
-            ViewBag.Producers = new SelectList(movieDropDownValues.Producers, "Id", "Name");
-            ViewBag.Actors = new SelectList(movieDropDownValues.Actors, "Id", "Name");
+                    ViewBag.Cinemas = new SelectList(movieDropDownValues.Cinemas, "Id", "Name");
+                    ViewBag.Producers = new SelectList(movieDropDownValues.Producers, "Id", "Name");
+                    ViewBag.Actors = new SelectList(movieDropDownValues.Actors, "Id", "Name");
 
-            return View();
+                    return View();
+                }
+                catch (Exception)
+                {
+                    TempData[ErrorMessage] = "Error on Create Movie, Please try again";
+
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         [HttpPost]
@@ -58,7 +84,19 @@ namespace MovieTickets.Web.Controllers
                 return View(movieModel);
             }
 
-            await movieService.AddMovieAsync(movieModel);
+            try
+            {
+                await movieService.AddMovieAsync(movieModel);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Error occur while Create a Movie. Please try again.");
+
+                return RedirectToAction("Index", "Home");
+
+            }
+
+            TempData[SuccessMessage] = "Create Movie Complete";
 
             return RedirectToAction("AllMovies");
         }
@@ -67,47 +105,71 @@ namespace MovieTickets.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var movieDetails = await movieService.GetMovieByIdAsync(id);
-
-            if (movieDetails == null)
+            try
             {
-                return View("NotFound");
+                var movieDetails = await movieService.GetMovieByIdAsync(id);
+
+                if (movieDetails != null)
+                {
+                    return View(movieDetails);
+
+                }
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "Error on Details Movie, Please try again";
+
+                return RedirectToAction("Index", "Home");
             }
 
-            return View(movieDetails);
+            return View("NotFound");
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var movieToEdit = await movieService.GetMovieByIdAsync(id);
-
-            if (movieToEdit == null)
+            if (User.Role() == "Admin")
             {
-                return View("Not Found");
+                try
+                {
+                    var movieToEdit = await movieService.GetMovieByIdAsync(id);
+
+                    if (movieToEdit == null)
+                    {
+                        return View("Not Found");
+                    }
+
+                    var modelToAdd = new NewMovie();
+
+                    modelToAdd.Id = movieToEdit.Id;
+                    modelToAdd.Title = movieToEdit.Title;
+                    modelToAdd.Description = movieToEdit.Description;
+                    modelToAdd.Price = movieToEdit.Price;
+                    modelToAdd.StartDate = (DateTime)movieToEdit.StartDate!;
+                    modelToAdd.EndDate = (DateTime)movieToEdit.EndDate!;
+                    modelToAdd.ImageUrl = movieToEdit.ImageUrl;
+                    modelToAdd.MovieCategory = movieToEdit.MovieCategory;
+                    modelToAdd.CinemaId = movieToEdit.CinemaId;
+                    modelToAdd.ProducerId = movieToEdit.ProducerId;
+                    modelToAdd.ActorIds = movieToEdit.ActorMovies.Select(n => n.ActorId).ToList();
+
+                    var movieDropDownValues = await movieService.GetNewMovieDropDownAsync();
+
+                    ViewBag.Cinemas = new SelectList(movieDropDownValues.Cinemas, "Id", "Name");
+                    ViewBag.Producers = new SelectList(movieDropDownValues.Producers, "Id", "Name");
+                    ViewBag.Actors = new SelectList(movieDropDownValues.Actors, "Id", "Name");
+
+                    return View(modelToAdd);
+                }
+                catch (Exception)
+                {
+                    TempData[ErrorMessage] = "Error on Details Movie, Please try again";
+
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
-            var modelToAdd = new NewMovie();
-
-            modelToAdd.Id = movieToEdit.Id;
-            modelToAdd.Title = movieToEdit.Title;
-            modelToAdd.Description = movieToEdit.Description;
-            modelToAdd.Price = movieToEdit.Price;
-            modelToAdd.StartDate = (DateTime)movieToEdit.StartDate!;
-            modelToAdd.EndDate = (DateTime)movieToEdit.EndDate!;
-            modelToAdd.ImageUrl = movieToEdit.ImageUrl;
-            modelToAdd.MovieCategory = movieToEdit.MovieCategory;
-            modelToAdd.CinemaId = movieToEdit.CinemaId;
-            modelToAdd.ProducerId = movieToEdit.ProducerId;
-            modelToAdd.ActorIds = movieToEdit.ActorMovies.Select(n => n.ActorId).ToList();
-
-            var movieDropDownValues = await movieService.GetNewMovieDropDownAsync();
-
-            ViewBag.Cinemas = new SelectList(movieDropDownValues.Cinemas, "Id", "Name");
-            ViewBag.Producers = new SelectList(movieDropDownValues.Producers, "Id", "Name");
-            ViewBag.Actors = new SelectList(movieDropDownValues.Actors, "Id", "Name");
-
-            return View(modelToAdd);
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         [HttpPost]
@@ -129,21 +191,42 @@ namespace MovieTickets.Web.Controllers
                 return View(movieViewModel);
             }
 
-            await movieService.UpdateMovieAsync(movieViewModel);
+            try
+            {
+                await movieService.UpdateMovieAsync(movieViewModel);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Error occur while Create a Movie. Please try again.");
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            TempData[SuccessMessage] = "Edit Movie Complete";
 
             return RedirectToAction("AllMovies");
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Filter([FromQuery]AllMoviesQueryModel queryModel)
+        public async Task<IActionResult> Filter([FromQuery] AllMoviesQueryModel queryModel)
         {
-            AllMoviesFilteredAndPagedServiceModel serviceModel = await movieService.AllAsync(queryModel);
+            try
+            {
+                AllMoviesFilteredAndPagedServiceModel serviceModel = await movieService.AllAsync(queryModel);
 
-            queryModel.AllMoviesViewModels = serviceModel.Movies;
-            queryModel.TotalMovies = serviceModel.TotalMoviesCount;
+                queryModel.AllMoviesViewModels = serviceModel.Movies;
+                queryModel.TotalMovies = serviceModel.TotalMoviesCount;
 
-            return View(queryModel);
-		}
+                return View(queryModel);
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "Error on Filter Movie, Please try again";
+
+                return RedirectToAction("Index", "Home");
+            }
+
+        }
     }
 }

@@ -25,9 +25,19 @@ namespace MovieTickets.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Users()
         {
-            var users = await movieDbContext.Users.ToListAsync();
+            try
+            {
+                var users = await movieDbContext.Users.ToListAsync();
 
-            return View(users);
+                return View(users);
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "Get Users action make an Error";
+                return RedirectToAction("Index","Home");
+                
+            }
+           
         }
 
         [HttpGet]
@@ -46,34 +56,44 @@ namespace MovieTickets.Web.Controllers
                 return View(loginViewModel);
             }
 
-            var user = await userManager.Users.FirstOrDefaultAsync(e => e.Email == loginViewModel.EmailAddress);
-
-            if (user != null)
+            try
             {
-                var passworCheck = await userManager
-                    .CheckPasswordAsync(user, loginViewModel.Password);
+                var user = await userManager.Users.FirstOrDefaultAsync(e => e.Email == loginViewModel.EmailAddress);
 
-                if (passworCheck)
+                if (user != null)
                 {
-                    var result = await signInManager
-                        .PasswordSignInAsync(user, loginViewModel.Password, false, false);
+                    var passworCheck = await userManager
+                        .CheckPasswordAsync(user, loginViewModel.Password);
 
-                    if (result.Succeeded)
+                    if (passworCheck)
                     {
-                        TempData[InformationsMessage] = "You are Signin";
+                        var result = await signInManager
+                            .PasswordSignInAsync(user, loginViewModel.Password, false, false);
 
-                        return RedirectToAction("AllMovies", "Movie");
+                        if (result.Succeeded)
+                        {
+                            TempData[InformationsMessage] = "You are Signin";
+
+                            return RedirectToAction("AllMovies", "Movie");
+                        }
                     }
+
+                    TempData[ErrorMessage] = "Wrong credentials. Please, try again!";
+
+                    return View(loginViewModel);
                 }
 
                 TempData[ErrorMessage] = "Wrong credentials. Please, try again!";
 
                 return View(loginViewModel);
             }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "Error on Login, Please try again";
 
-            TempData[ErrorMessage] = "Wrong credentials. Please, try again!";
-
-            return View(loginViewModel);
+                return View(nameof(loginViewModel));
+            }
+            
         }
 
         [HttpGet]
@@ -87,49 +107,70 @@ namespace MovieTickets.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
+
             if (!ModelState.IsValid)
             {
-				TempData[ErrorMessage] = "Register Error";
-
-				return View(registerViewModel);
-            }
-
-            var user = await userManager.FindByEmailAsync(registerViewModel.Email);
-
-            if (user != null)
-            {
-                TempData[ErrorMessage] = "This email address is already in use";
+                TempData[ErrorMessage] = "Register Error";
 
                 return View(registerViewModel);
             }
-
-            var newUser = new ApplicationUser()
+            try
             {
-                FullName = registerViewModel.FullName,
-                Email = registerViewModel.Email,
-                UserName = registerViewModel.Email
-            };
+                var user = await userManager.FindByEmailAsync(registerViewModel.Email);
 
-            var newUserResponse = await userManager.CreateAsync(newUser, registerViewModel.Password);
+                if (user != null)
+                {
+                    TempData[ErrorMessage] = "This email address is already in use";
 
-            if (newUserResponse.Succeeded)
-            {
-                await userManager.AddToRoleAsync(newUser, "User");
+                    return View(registerViewModel);
+                }
+
+                var newUser = new ApplicationUser()
+                {
+                    FullName = registerViewModel.FullName,
+                    Email = registerViewModel.Email,
+                    UserName = registerViewModel.Email
+                };
+
+                var newUserResponse = await userManager.CreateAsync(newUser, registerViewModel.Password);
+
+                if (newUserResponse.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(newUser, "User");
+                }
+
+                TempData[SuccessMessage] = "Register Completed";
+
+                return View("RegisterCompleted");
             }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "Error on Register, Please try again";
 
-            TempData[SuccessMessage] = "Register Completed";
-
-            return View("RegisterCompleted");
+                return View(nameof(Register));
+            }
+            
         }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            try
+            {
+                await signInManager.SignOutAsync();
+            }
+            catch (Exception)
+            {
+
+                TempData[ErrorMessage] = "Error in Logout";
+
+                return RedirectToAction("Index", "Home");
+            }
 
             TempData[InformationsMessage] = "You are logout";
 
             return RedirectToAction("AllMovies", "Movie");
+
         }
 
         public IActionResult AccessDenied(string ReturnUrl)
