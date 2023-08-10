@@ -11,7 +11,7 @@ namespace MovieTickets.Web.ViewModels.Account
         public string EmailAddress { get; set; } = null!;
 
         [Required]
-        [PasswordPropertyText]
+        [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
     }
 }

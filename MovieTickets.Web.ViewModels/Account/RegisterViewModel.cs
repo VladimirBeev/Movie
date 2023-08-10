@@ -15,13 +15,13 @@ namespace MovieTickets.Web.ViewModels.Account
         public string Email { get; set; } = null!;
 
         [Required]
-        [PasswordPropertyText]
+        [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
 
         [Required]
         [DisplayName("Confirm password")]
-        [PasswordPropertyText]
-        [Compare("Password")]
+		[DataType(DataType.Password)]
+		[Compare("Password")]
         public string PasswordConfirmation { get; set; } = null!;
     }
 }
