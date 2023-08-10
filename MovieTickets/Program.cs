@@ -91,6 +91,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
-//app.MapRazorPages();
+app.MapRazorPages();
 
 app.Run();
