@@ -8,7 +8,7 @@ using Shopping;
 
 namespace MovieTickets.Web.Controllers
 {
-	public class OrderController : Controller
+	public class OrderController : BaseController
     {
         private readonly ShoppingCart shoppingCart;
         private readonly IMovieService movieService;

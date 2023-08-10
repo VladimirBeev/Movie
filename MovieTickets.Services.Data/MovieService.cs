@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 using MovieTickets.Data;
 using MovieTickets.Data.EntityModels;
@@ -10,6 +11,7 @@ using MovieTickets.Web.ViewModels.Movie;
 using MovieTickets.Web.ViewModels.Movie.Enum;
 using MovieTickets.Web.ViewModels.Producer;
 
+using System.Data.Common;
 using System.Net;
 
 namespace MovieTickets.Services.Data
@@ -58,9 +60,9 @@ namespace MovieTickets.Services.Data
 
 			if (!string.IsNullOrWhiteSpace(allMoviesQueryModel.SearchString))
 			{
-				string wildCard = $"%{allMoviesQueryModel.SearchString.ToLower()}%";
+                string wildCard = $"%{allMoviesQueryModel.SearchString.ToLower()}%";
 
-				moviesQuery = moviesQuery
+                moviesQuery = moviesQuery
 					.Where(h => EF.Functions.Like(h.Title, wildCard) ||
 								EF.Functions.Like(h.Description, wildCard));
 			}

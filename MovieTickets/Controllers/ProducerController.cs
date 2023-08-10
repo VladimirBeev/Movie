@@ -11,7 +11,7 @@ using static MovieTickets.Common.NotificationsConstant;
 namespace MovieTickets.Web.Controllers
 {
     [Authorize]
-    public class ProducerController : Controller
+    public class ProducerController : BaseController
     {
         private readonly IProducerService producerService;
 

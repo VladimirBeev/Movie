@@ -10,7 +10,7 @@ using static MovieTickets.Common.NotificationsConstant;
 namespace MovieTickets.Web.Controllers
 {
     [Authorize]
-    public class CinemaController : Controller
+    public class CinemaController : BaseController
     {
         private readonly ICinemaService cinemaService;
 

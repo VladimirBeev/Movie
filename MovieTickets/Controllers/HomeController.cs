@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using MovieTickets.Services.Data;
 using MovieTickets.Services.Data.Interfaces;
+using MovieTickets.Web.Controllers;
 using MovieTickets.Web.ViewModels.Home;
 
 using System.Diagnostics;
@@ -10,7 +11,7 @@ using System.Diagnostics;
 namespace MovieTickets.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly IMovieService movieService;
         public HomeController(IMovieService movieService)

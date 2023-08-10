@@ -12,7 +12,7 @@ using static MovieTickets.Common.NotificationsConstant;
 namespace MovieTickets.Web.Controllers
 {
     [Authorize]
-    public class ActorController : Controller
+    public class ActorController : BaseController
     {
         private readonly IActorService actorService;
         private readonly UserManager<ApplicationUser> userManager;
