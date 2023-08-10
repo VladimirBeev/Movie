@@ -78,6 +78,9 @@ else
     app.UseHsts();
 }
 
+app.UseCors(builder =>
+    builder.WithOrigins("https://localhost:7056/"));
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
