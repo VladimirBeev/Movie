@@ -9,6 +9,7 @@ using static MovieTickets.Web.Infrastructure.Extensions.WebApplicationBuilderExt
 
 using Shopping;
 using MovieTickets.Web.Infrastructure.ModelBinders;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,8 +40,6 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     })
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<MovieDbContext>();
-
-
 
 builder.Services.AddApplicationServices(typeof(IActorService));
 
@@ -78,9 +77,6 @@ else
     app.UseHsts();
 }
 
-app.UseCors(builder =>
-    builder.WithOrigins("https://localhost:7056/"));
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -90,7 +86,15 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapDefaultControllerRoute();
-app.MapRazorPages();
+app.UseEndpoints(endpint =>
+{
+    endpint.MapControllerRoute(
+        name: "Areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    endpint.MapControllerRoute(
+	name: "default",
+	pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+//app.MapRazorPages();
 
 app.Run();

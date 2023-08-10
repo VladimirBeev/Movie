@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieTickets.Services.Data;
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.Controllers;
+using MovieTickets.Web.Infrastructure.Extensions;
 using MovieTickets.Web.ViewModels.Home;
 
 using System.Diagnostics;
@@ -23,6 +24,10 @@ namespace MovieTickets.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            if (User.Role() == "Admin")
+            {
+                return RedirectToAction("Admin", "Home", new { area = "Admin"});
+            }
             var threeMovies = await movieService.LastThreeMovies();
 
             return View(threeMovies);

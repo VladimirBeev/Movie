@@ -10,7 +10,7 @@ using static MovieTickets.Common.NotificationsConstant;
 
 namespace MovieTickets.Web.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
