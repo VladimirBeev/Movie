@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using MovieTickets.Data.EntityModels;
 using MovieTickets.Services.Data.Interfaces;
+using MovieTickets.Web.Infrastructure.Extensions;
 using MovieTickets.Web.ViewModels.Actor;
 
 namespace MovieTickets.Web.Controllers
@@ -10,9 +13,11 @@ namespace MovieTickets.Web.Controllers
     public class ActorController : Controller
     {
         private readonly IActorService actorService;
+		private readonly UserManager<ApplicationUser> userManager;
 
-        public ActorController(IActorService actorService)
+		public ActorController(IActorService actorService, UserManager<ApplicationUser> userManager)
         {
+            this.userManager = userManager;
             this.actorService = actorService;
         }
 
@@ -33,7 +38,12 @@ namespace MovieTickets.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            if (User.Role() == "Admin")
+            {
+				return View();
+			}
+
+            return RedirectToAction("AccessDenied","Account");
         }
 
 		//[HttpPost]
@@ -89,21 +99,27 @@ namespace MovieTickets.Web.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            try
+            string userRole = User.Role();
+            if (userRole == "Admin")
             {
-				var actorEdit = await actorService.GetActorByIdAsync(id);
-				if (actorEdit == null)
+				try
 				{
-					return View("NotFound");
+					var actorEdit = await actorService.GetActorByIdAsync(id);
+					if (actorEdit == null)
+					{
+						return View("NotFound");
+					}
+
+					return View(actorEdit);
 				}
+				catch (Exception)
+				{
 
-				return View(actorEdit);
+					return View(nameof(NotFound));
+				}
 			}
-            catch (Exception)
-            {
 
-                return View(nameof(NotFound));
-            }
+            return RedirectToAction("AccessDenied","Account");
         }
 
         [HttpPost]

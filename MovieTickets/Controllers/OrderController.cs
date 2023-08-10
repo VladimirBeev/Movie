@@ -78,10 +78,6 @@ namespace MovieTickets.Web.Controllers
         {
             var items = shoppingCart.GetShoppingCartItems();
 
-            //string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            //string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
-
 			string userId = User.Id();
 
 			string userEmailAddress = User.Email();
