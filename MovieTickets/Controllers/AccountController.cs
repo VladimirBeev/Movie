@@ -22,23 +22,23 @@ namespace MovieTickets.Web.Controllers
             this.movieDbContext = movieDbContext;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Users()
-        {
-            try
-            {
-                var users = await movieDbContext.Users.ToListAsync();
+        //[HttpGet]
+        //public async Task<IActionResult> Users()
+        //{
+        //    try
+        //    {
+        //        var users = await movieDbContext.Users.ToListAsync();
 
-                return View(users);
-            }
-            catch (Exception)
-            {
-                TempData[ErrorMessage] = "Get Users action make an Error";
+        //        return View(users);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        TempData[ErrorMessage] = "Get Users action make an Error";
 
-                return RedirectToAction("Index","Home");
-            }
+        //        return RedirectToAction("Index","Home");
+        //    }
            
-        }
+        //}
 
         [HttpGet]
         public IActionResult Login()

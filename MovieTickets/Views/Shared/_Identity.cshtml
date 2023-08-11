@@ -29,7 +29,7 @@ else
             @if (User.IsInRole("Admin"))
             {
                 <li>
-                    <a class="dropdown-item" asp-controller="Account" asp-action="Users">
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="AllUsers">
                         <i class="bi bi-people"></i> Users
                     </a>
                 </li>
