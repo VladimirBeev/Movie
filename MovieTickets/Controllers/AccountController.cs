@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using MovieTickets.Common;
 using MovieTickets.Data;
 using MovieTickets.Data.EntityModels;
 using MovieTickets.Web.ViewModels.Account;
 
 using static MovieTickets.Common.NotificationsConstant;
+using static MovieTickets.Common.UserRoles;
 
 namespace MovieTickets.Web.Controllers
 {
@@ -14,31 +16,17 @@ namespace MovieTickets.Web.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly RoleManager<IdentityRole<Guid>> roleManager;
         private readonly MovieDbContext movieDbContext;
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, MovieDbContext movieDbContext)
+        public AccountController(UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager, 
+            MovieDbContext movieDbContext, RoleManager<IdentityRole<Guid>> identityRole)
         {
+            this.roleManager = identityRole;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.movieDbContext = movieDbContext;
         }
-
-        //[HttpGet]
-        //public async Task<IActionResult> Users()
-        //{
-        //    try
-        //    {
-        //        var users = await movieDbContext.Users.ToListAsync();
-
-        //        return View(users);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        TempData[ErrorMessage] = "Get Users action make an Error";
-
-        //        return RedirectToAction("Index","Home");
-        //    }
-           
-        //}
 
         [HttpGet]
         public IActionResult Login()
@@ -136,6 +124,10 @@ namespace MovieTickets.Web.Controllers
 
                 if (newUserResponse.Succeeded)
                 {
+                    if (!await roleManager.RoleExistsAsync(UserRoles.User))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole<Guid>(UserRoles.User));
+                    }
                     await userManager.AddToRoleAsync(newUser, "User");
                 }
 

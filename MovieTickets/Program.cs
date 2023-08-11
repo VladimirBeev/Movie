@@ -10,7 +10,6 @@ using MovieTickets.Web.Infrastructure.ModelBinders;
 
 using Shopping;
 
-using static MovieTickets.Common.AdminUser;
 using static MovieTickets.Web.Infrastructure.Extensions.WebApplicationBuilderExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,16 +27,16 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
         options.Password.RequireDigit = builder.Configuration
             .GetValue<bool>("Identity:SignIn:RequireDigit");
 
-		options.Password.RequireNonAlphanumeric = builder.Configuration
+        options.Password.RequireNonAlphanumeric = builder.Configuration
             .GetValue<bool>("Identity:SignIn:RequireNonAlphanumeric");
 
-		options.Password.RequiredLength = builder.Configuration
+        options.Password.RequiredLength = builder.Configuration
             .GetValue<int>("Identity:SignIn:RequiredLength");
 
-		options.Password.RequireLowercase = builder.Configuration
+        options.Password.RequireLowercase = builder.Configuration
             .GetValue<bool>("Identity:SignIn:RequireLowercase");
 
-		options.Password.RequireUppercase = builder.Configuration
+        options.Password.RequireUppercase = builder.Configuration
             .GetValue<bool>("Identity:SignIn:RequireUppercase");
     })
     .AddRoles<IdentityRole<Guid>>()
@@ -48,7 +47,6 @@ builder.Services.AddApplicationServices(typeof(IActorService));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
 
-//builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
@@ -97,9 +95,8 @@ app.UseEndpoints(endpint =>
         name: "Areas",
         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
     endpint.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 });
-//app.MapRazorPages();
 
 app.Run();

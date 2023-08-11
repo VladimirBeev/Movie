@@ -12,13 +12,9 @@ namespace MovieTickets.Web.Controllers
 {
     public class UsersController : BaseAdminController
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly MovieDbContext movieDbContext;
-        public UsersController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, MovieDbContext movieDbContext)
+        public UsersController(MovieDbContext movieDbContext)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
             this.movieDbContext = movieDbContext;
         }
 
@@ -37,7 +33,6 @@ namespace MovieTickets.Web.Controllers
 
                 return RedirectToAction("Index","Home");
             }
-           
         }
     }
 }

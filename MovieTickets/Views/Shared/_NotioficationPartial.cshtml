@@ -6,13 +6,13 @@
 }
 @if (TempData.ContainsKey(WarningMessage))
 {
-	<script>toastr.error(`@TempData[WarningMessage]`);</script>
+	<script>toastr.warning(`@TempData[WarningMessage]`);</script>
 }
 @if (TempData.ContainsKey(InformationsMessage))
 {
-	<script>toastr.error(`@TempData[InformationsMessage]`);</script>
+	<script>toastr.success(`@TempData[InformationsMessage]`);</script>
 }
 @if (TempData.ContainsKey(SuccessMessage))
 {
-	<script>toastr.error(`@TempData[SuccessMessage]`);</script>
+	<script>toastr.success(`@TempData[SuccessMessage]`);</script>
 }
