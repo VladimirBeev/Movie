@@ -3,8 +3,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-using static MovieTickets.Common.EntityValidationConstant.UserConstant;
-
 namespace MovieTickets.Data.EntityModels
 {
 	public class ApplicationUser : IdentityUser<Guid>

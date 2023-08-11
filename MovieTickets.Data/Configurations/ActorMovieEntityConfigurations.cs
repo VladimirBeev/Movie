@@ -19,7 +19,7 @@ namespace MovieTickets.Data.Configurations
 			.WithMany(a => a.ActorMovies)
 			.HasForeignKey(a => a.ActorId);
 
-			builder.HasData(GenerateActorMovie());
+			//builder.HasData(GenerateActorMovie());
 		}
 
 		private ActorMovie[] GenerateActorMovie()

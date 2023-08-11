@@ -9,7 +9,7 @@ namespace MovieTickets.Data.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Producer> builder)
 		{
-			builder.HasData(GenerateProducers());
+			//builder.HasData(GenerateProducers());
 		}
 
 		private Producer[] GenerateProducers()

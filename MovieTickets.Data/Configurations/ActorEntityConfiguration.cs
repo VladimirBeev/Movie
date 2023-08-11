@@ -9,7 +9,7 @@ namespace MovieTickets.Data.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Actor> builder)
 		{
-			builder.HasData(GenerateActors());
+			//builder.HasData(GenerateActors());
 		}
 		private Actor[] GenerateActors()
 		{

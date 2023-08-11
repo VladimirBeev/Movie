@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+using MovieTickets.Common;
 using MovieTickets.Data;
 using MovieTickets.Data.EntityModels;
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.Infrastructure.Extensions;
-using static MovieTickets.Web.Infrastructure.Extensions.WebApplicationBuilderExtensions;
+using MovieTickets.Web.Infrastructure.ModelBinders;
 
 using Shopping;
-using MovieTickets.Web.Infrastructure.ModelBinders;
-using Microsoft.AspNetCore.Authentication.Cookies;
+
+using static MovieTickets.Common.AdminUser;
+using static MovieTickets.Web.Infrastructure.Extensions.WebApplicationBuilderExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,11 +82,14 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+
 app.UseRouting();
 app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.SeedAdministrator(AdminUser.Email);
 
 app.UseEndpoints(endpint =>
 {

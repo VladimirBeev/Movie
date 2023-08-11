@@ -6,6 +6,10 @@ using MovieTickets.Data.EntityModels;
 
 using System.Reflection;
 
+using static MovieTickets.Common.UserRoles;
+using static MovieTickets.Common.AdminUser;
+using MovieTickets.Common;
+
 namespace MovieTickets.Web.Infrastructure.Extensions
 {
 	public static class WebApplicationBuilderExtensions
@@ -41,6 +45,53 @@ namespace MovieTickets.Web.Infrastructure.Extensions
 
 				services.AddScoped(interfaceType, implementationType);
 			}
+		}
+
+		public static IApplicationBuilder SeedAdministrator(this IApplicationBuilder app, string email)
+		{
+			using IServiceScope scopedServices = app.ApplicationServices.CreateScope();
+
+			IServiceProvider serviceProvider = scopedServices.ServiceProvider;
+
+			UserManager<ApplicationUser> userManager =
+				serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+			RoleManager<IdentityRole<Guid>> roleManager =
+				serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+			Task.Run(async () =>
+			{
+				if (await roleManager.RoleExistsAsync(UserRoles.Admin))
+				{
+					return;
+				}
+
+				IdentityRole<Guid> role =
+					new IdentityRole<Guid>(UserRoles.Admin);
+
+				await roleManager.CreateAsync(role);
+
+				ApplicationUser adminUser =
+					await userManager.FindByEmailAsync(email);
+
+				if (adminUser == null)
+				{
+					var newAdminUser = new ApplicationUser()
+					{
+						FullName = AdminUser.FullName,
+						UserName = AdminUser.FullName,
+						EmailConfirmed = true,
+						Email = AdminUser.Email,
+					};
+
+					await userManager.CreateAsync(newAdminUser, "admin");
+					await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
+				}
+			})
+			.GetAwaiter()
+			.GetResult();
+
+			return app;
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace MovieTickets.Data.Configurations
 			builder.Property(m => m.Price)
 			.HasPrecision(6, 2);
 
-			builder.HasData(GenerateMovies());
+			//builder.HasData(GenerateMovies());
 		}
 
 		private Movie[] GenerateMovies()
