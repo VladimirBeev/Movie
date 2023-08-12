@@ -77,15 +77,17 @@ namespace MovieTickets.Services.Data
         {
             var producer = await dbContext.Producers.FirstOrDefaultAsync(p => p.Id == updateProducer.Id);
 
-            if (producer != null)
+            if (producer == null)
             {
-                producer.Id = updateProducer.Id;
-                producer.Name = WebUtility.HtmlEncode(updateProducer.Name);
-                producer.Description = WebUtility.HtmlEncode(updateProducer.Description);
-                producer.ImageUrl = WebUtility.HtmlEncode(updateProducer.ImageUrl);
+                return null!;
             }
 
-            await dbContext.SaveChangesAsync();
+			producer.Id = updateProducer.Id;
+			producer.Name = WebUtility.HtmlEncode(updateProducer.Name);
+			producer.Description = WebUtility.HtmlEncode(updateProducer.Description);
+			producer.ImageUrl = WebUtility.HtmlEncode(updateProducer.ImageUrl);
+
+			await dbContext.SaveChangesAsync();
 
             return updateProducer;
         }
