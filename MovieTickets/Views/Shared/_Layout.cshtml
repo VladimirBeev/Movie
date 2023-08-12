@@ -86,14 +86,16 @@
         }
 
         function success(pos){
+
             console.log(pos);
         }
 
         function error(){
 
-
         }
+
         const options = {};
+
         window.navigator.geolocation.getCurrentPosition(success, error, options);
 
     </script>
