@@ -5,6 +5,7 @@ namespace MovieTickets.Service.Tests
 	using MovieTickets.Data;
 	using MovieTickets.Services.Data;
 	using MovieTickets.Services.Data.Interfaces;
+	using MovieTickets.Web.ViewModels.Actor;
 
 	using static DataBaseSeeder;
 	public class ActorServiceTests
@@ -54,6 +55,62 @@ namespace MovieTickets.Service.Tests
 			Assert.That(result.Id, Is.EqualTo(existActorViewModel.Id));
 			Assert.That(result.Name, Is.EqualTo(existActorViewModel.Name));
 			Assert.That(result.Description, Is.EqualTo(existActorViewModel.Description));
+		}
+
+		[Test]
+		public async Task GetAllActorByIdAsyncShouldReturnNull()
+		{
+			var result = await this.actorService.GetAllActorsAsync();
+			Assert.That(result.Count, Is.EqualTo(5));
+		}
+
+		[Test]
+		public async Task DeleteActorAsyncReturnTrue()
+		{
+			var viewModel = ViewModel;
+			var addViewModel = this.actorService.AddActorAsync(viewModel);
+			await actorService.DeleteActorAsync(viewModel.Id);
+			var getActor = await actorService.GetActorByIdAsync(viewModel.Id);
+			Assert.That(getActor, Is.EqualTo(null));
+		}
+
+		[Test]
+		public async Task DeleteActorAsyncReturnNull()
+		{
+			var viewModel = ViewModel;
+			await actorService.DeleteActorAsync(viewModel.Id);
+			var getActor = await actorService.GetActorByIdAsync(viewModel.Id);
+			Assert.That(getActor, Is.EqualTo(null));
+		}
+
+		[Test]
+		public async Task UpdateActorAsyncTrue()
+		{
+			var viewModel = ViewModel;
+			var addViewModel = this.actorService.AddActorAsync(viewModel);
+			var newviewModel = new ActorViewModel()
+			{
+				Id = viewModel.Id,
+				Name = "Testt",
+				Description = viewModel.Description,
+			};
+			var updateViewModel = await actorService.UpdateActorAsync(newviewModel);
+			var getActor = await actorService.GetActorByIdAsync(viewModel.Id);
+			Assert.That(getActor.Name, Is.EqualTo(newviewModel.Name));
+		}
+
+		[Test]
+		public async Task UpdateActorAsyncNull()
+		{
+			var viewModel = ViewModel;
+			var newviewModel = new ActorViewModel()
+			{
+				Id = 20,
+				Name = "Testt",
+				Description = viewModel.Description,
+			};
+			var updateViewModel = await actorService.UpdateActorAsync(newviewModel);
+			Assert.That(updateViewModel, Is.EqualTo(null));
 		}
 	}
 }
