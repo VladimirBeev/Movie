@@ -41,11 +41,12 @@
                     </ul>
                     <form class="d-flex">
                         @*<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">*@
-                        <button class="btn btn-outline-success" asp-controller="Movie" asp-action="Filter" type="submit">Search </button>
+                        <button class="btn btn-outline-success" asp-area="" asp-controller="Movie" asp-action="Filter" type="submit">Search </button>
                     </form>
                     <ul class="navbar-nav">
                         @await Component.InvokeAsync("ShoppingCartSummary")
                     </ul>
+                    <span style="padding: 5px;"></span>
                     @*<form class="form-check-inline my-2 my-lg-0" asp-controller="Movie" asp-action="Filter" style="padding-right: 25px;">
                         <input name="searchString" type="text" class="form-control" placeholder="Search for a movie..." />
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
