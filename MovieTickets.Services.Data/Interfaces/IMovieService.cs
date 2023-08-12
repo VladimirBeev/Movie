@@ -6,9 +6,11 @@ namespace MovieTickets.Services.Data.Interfaces
 {
 	public interface IMovieService
     {
-        Task<ICollection<AllMoviesViewModel>> GetAllMoviesAsync();
+        Task<ICollection<AllMoviesViewModel>> GetAllMoviesAsync(int id);
 
-        Task AddMovieAsync(NewMovie moviesViewModel);
+		Task<ICollection<AllMoviesViewModel>> GetAllMoviesAsync();
+
+		Task AddMovieAsync(NewMovie moviesViewModel);
 
         Task<NewMovie> GetNewMovieByIdAsync(int id);
 

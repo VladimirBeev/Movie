@@ -37,6 +37,7 @@
 								<a class="btn btn-danger" asp-controller="Cinema" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Delete</a>
 							}
 							<a class="btn btn-outline-info" asp-controller="Cinema" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i>Details</a>
+							<a class="btn btn-outline-info" asp-controller="Movie" asp-action="AllCinemaMovies" asp-route-id="@item.Id"><i class="bi bi-eye"></i>Movies</a>
 						</td>
 					</tr>
 				}

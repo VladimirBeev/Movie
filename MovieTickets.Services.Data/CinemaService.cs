@@ -4,6 +4,7 @@ using MovieTickets.Data;
 using MovieTickets.Data.EntityModels;
 using MovieTickets.Services.Data.Interfaces;
 using MovieTickets.Web.ViewModels.Cinema;
+using MovieTickets.Web.ViewModels.Movie;
 
 using System.Net;
 

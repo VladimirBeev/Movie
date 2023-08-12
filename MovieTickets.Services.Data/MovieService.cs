@@ -134,10 +134,28 @@ namespace MovieTickets.Services.Data
 			};
 
 		}
-
 		public async Task<ICollection<AllMoviesViewModel>> GetAllMoviesAsync()
 		{
 			return await dbContext.Movies
+				.Select(m => new AllMoviesViewModel()
+				{
+					Id = m.Id,
+					Title = WebUtility.HtmlDecode(m.Title),
+					Description = WebUtility.HtmlDecode(m.Description),
+					EndDate = m.EndDate,
+					StartDate = m.StartDate,
+					Cinema = WebUtility.HtmlDecode(m.Cinema.Name),
+					ImageUrl = WebUtility.UrlDecode(m.ImageUrl),
+					Price = m.Price,
+					MovieCategory = WebUtility.HtmlDecode(m.MovieCategory.ToString()),
+					Producer = WebUtility.HtmlDecode(m.Producer.Name)
+
+				}).ToListAsync();
+		}
+
+		public async Task<ICollection<AllMoviesViewModel>> GetAllMoviesAsync(int id)
+		{
+			return await dbContext.Movies.Where(m => m.CinemaId == id)
 				.Select(m => new AllMoviesViewModel()
 				{
 					Id = m.Id,

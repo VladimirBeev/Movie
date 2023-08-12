@@ -46,7 +46,30 @@ namespace MovieTickets.Web.Controllers
             }
         }
 
-        [HttpGet]
+		[HttpGet]
+		[AllowAnonymous]
+		public async Task<IActionResult> AllCinemaMovies(int id)
+		{
+			try
+			{
+				var allMovies = await movieService.GetAllMoviesAsync(id);
+
+				if (allMovies != null)
+				{
+					return View(allMovies);
+				}
+
+				return View("NotFound");
+			}
+			catch (Exception)
+			{
+				TempData[ErrorMessage] = "Error on Movies, Please try again";
+
+				return RedirectToAction("Index", "Home");
+			}
+		}
+
+		[HttpGet]
         public async Task<IActionResult> Create()
         {
             if (User.Role() == "Admin")

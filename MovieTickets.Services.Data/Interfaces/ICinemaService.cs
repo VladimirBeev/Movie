@@ -1,4 +1,5 @@
-﻿using MovieTickets.Web.ViewModels.Cinema;
+﻿using MovieTickets.Data.EntityModels;
+using MovieTickets.Web.ViewModels.Cinema;
 
 namespace MovieTickets.Services.Data.Interfaces
 {
@@ -13,5 +14,6 @@ namespace MovieTickets.Services.Data.Interfaces
         Task<CinemasViewModel> UpdateCinemaAsync(CinemasViewModel updateActor);
 
         Task DeleteCinemaAsync(int id);
+
     }
 }

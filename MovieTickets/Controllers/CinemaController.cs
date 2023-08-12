@@ -13,13 +13,30 @@ namespace MovieTickets.Web.Controllers
     public class CinemaController : BaseController
     {
         private readonly ICinemaService cinemaService;
+        //private readonly IMovieService movieService;
 
         public CinemaController(ICinemaService cinemaService)
         {
+            //this.movieService = movieService;
             this.cinemaService = cinemaService;
         }
+		//[HttpGet]
+		//[AllowAnonymous]
+		//public async Task<IActionResult> AllCinemaMovies(int id)
+		//{
+		//	var allMovies = await movieService.GetAllMoviesAsync(id);
 
-        [HttpGet]
+		//	if (allMovies != null)
+		//	{
+		//		return View("AllMovies", allMovies);
+		//	}
+
+		//	var allCinemas = await cinemaService.GetAllCinemasAsync();
+
+		//	return View("AllCinemas",allCinemas);
+		//}
+
+		[HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> AllCinemas()
         {
