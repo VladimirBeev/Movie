@@ -77,3 +77,24 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+@section Scripts{
+    <script>
+
+        if(!navigator.geolocation){
+            throw new Error("No geolocation available");
+        }
+
+        function success(pos){
+            console.log(pos);
+        }
+
+        function error(){
+
+
+        }
+        const options = {};
+        window.navigator.geolocation.getCurrentPosition(success, error, options);
+
+    </script>
+}
