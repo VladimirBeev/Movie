@@ -30,18 +30,18 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Movie" asp-action="AllMovies"><i class="badge-info bi-film"></i> Films</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Cinema" asp-action="AllCinemas"><i class="bi bi-camera-reels"></i> Cinemas</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cinema" asp-action="AllCinemas"><i class="bi bi-camera-reels"></i> Cinemas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Producer" asp-action="AllProducers"><i class="bi bi-headset"></i> Producers</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Producer" asp-action="AllProducers"><i class="bi bi-headset"></i> Producers</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Actor" asp-action="AllActors"><i class="bi bi-person-square"></i> Actors</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Actor" asp-action="AllActors"><i class="bi bi-person-square"></i> Actors</a>
                         </li>
                     </ul>
                     <form class="d-flex">
                         @*<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">*@
-                        <button class="btn btn-outline-success" asp-controller="Movie" asp-action="Filter" type="submit">Search</button>
+                        <button class="btn btn-outline-success" asp-controller="Movie" asp-action="Filter" type="submit">Search </button>
                     </form>
                     <ul class="navbar-nav">
                         @await Component.InvokeAsync("ShoppingCartSummary")

@@ -10,7 +10,7 @@ namespace MovieTickets.Data;
 
 public class MovieDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
-    public MovieDbContext(DbContextOptions<MovieDbContext> options)
+    public MovieDbContext(DbContextOptions<MovieDbContext> options, bool seedDb = true)
         : base(options)
     {
     }
