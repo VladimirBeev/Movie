@@ -17,6 +17,8 @@ You can Register Account as well.
 
 User can view detail for movies, producers, actors
 
+Buy Tickets and make Order to pay.
+
 First page Caruser with last three movie added with button for detail of movie
 
 ![carusel](https://github.com/VladimirBeev/Movie/assets/29148965/93933eae-2310-4c5b-8e24-bf58c1cceab7)
