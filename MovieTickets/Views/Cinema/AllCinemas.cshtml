@@ -13,7 +13,7 @@
 				<tr>
 					<th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
 					<th>@Html.DisplayNameFor(model => model.Name)</th>
-					<th>@Html.DisplayNameFor(model => model.Description)</th>
+					@*<th>@Html.DisplayNameFor(model => model.Description)</th>*@
 					<th>Actions</th>
 				</tr>
 			</thead>
@@ -22,14 +22,14 @@
 				{
 					<tr>
 						<td class="align-middle">
-							<img class="rounded-circle" src="@item.ImageUrl" alt="@item.Name" style="max-width: 150px" ? />
+							<img class="rounded-circle img-fluid" src="@item.ImageUrl" alt="@item.Name" style="max-width: 150px" ? />
 						</td>
 						<td class="align-middle">
 							@Html.DisplayFor(modelItem => item.Name)
 						</td>
-						<td class="align-middle">
+						@*<td class="align-middle">
 							@Html.DisplayFor(modelItem => item.Description)
-						</td>
+						</td>*@
 						<td class="align-middle">
 							@if ((User.Identity?.IsAuthenticated ?? false) && User.IsInRole("Admin"))
 							{
@@ -52,3 +52,9 @@
 		</a>
 	</div>
 }
+
+<style>
+	tr {
+		background-color:coral;
+	}
+</style>
